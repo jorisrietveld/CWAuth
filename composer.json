@@ -1,0 +1,17 @@
+{
+    "name": "jorisrietveld/cwauth",
+    "description": "A simple authentication solution",
+    "authors": [
+        {
+            "name": "jorisrietveld",
+            "email": "jorisrietveld@protonmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "CWAuth\\": "src/CWAuth/",
+            "CWDatabase\\": "../CWDatabase/src/CWDatabase/"
+        }
+	}
+}
