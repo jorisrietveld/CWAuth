@@ -29,11 +29,15 @@ echo '<strong>var_dump( $config->getDocNamespaces() );</strong>';
 var_dump( $config->getDocNamespaces() );
 
 echo '<strong>var_dump( $config->attributes() );</strong>';
-var_dump( $config->attributes() );
+var_dump( $config->attributes("mysql-connection") );
 
-echo 'var_dump( $config->count() );';
+echo '<strong>var_dump( $config->count() );</strong>';
 var_dump( $config->count() );
 
-echo 'var_dump( $config->asXML() );';
+echo '<strong>var_dump( $config->asXML() );</strong>';
 var_dump( $config->asXML() );
+
+$dbconfig = (array)$config->userDatabaseConnection;
+
+var_dump( $dbconfig );
 

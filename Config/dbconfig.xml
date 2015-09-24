@@ -1,7 +1,7 @@
-<!-- Database configuration file -->
-<database-connections>
-    <user-database-connection>
-        <name>user-database-connection</name>
+<?xml version="1.0" standalone="yes"?>
+<databaseConnections>
+    <userDatabaseConnection>
+        <name>userDatabaseConnection</name>
         <driver>mysql</driver>
         <host>127.0.0.1</host>
         <username>root</username>
@@ -10,5 +10,5 @@
         <port>3306</port>
         <charset>utf8</charset>
         <collation>utf8_general_ci</collation>
-    </user-database-connection>
-</database-connections>
+    </userDatabaseConnection>
+</databaseConnections>

@@ -8,7 +8,17 @@
 require( "header.php" );
 require( ".." . DIRECTORY_SEPARATOR . "Config" . DIRECTORY_SEPARATOR . "databaseConfigExample.php" );
 
-$connectionParams = $connections["mysqlConnection"];
+try
+{
+	$connectionParams = $connections[ "mysqlConnection" ];
 
-$dbModel = new \CWAuth\Models\Database( $connectionParams );
+	$dbModel = new \CWAuth\Models\Database();
 
+	$dbting = $dbModel->getDatabaseConnection();
+
+
+}
+catch( \Exception $e )
+{
+	var_dump( $e );
+}

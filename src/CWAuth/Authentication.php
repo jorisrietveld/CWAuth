@@ -24,4 +24,13 @@ class Authentication
 
 	}
 
+	public function register( $username, $password, $email )
+	{
+
+	}
+
+	public function getAuthorizationLevel( $userId )
+	{
+
+	}
 }
