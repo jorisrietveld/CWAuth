@@ -142,21 +142,15 @@ class Database
 	 */
 	public function query( $sql, $parameters )
 	{
+		$statement = $this->databaseConnection->prepare( $sql );
 		$statement = (new \PDO(""))->prepare( $sql );
 
-		$counter = 1;
-		foreach( $parameters as $key => $value )
+		foreach( $parameters as $key => $parameter )
 		{
-            $statement->bindValue( $counter, $value );
-			$counter++;
+            $statement->bindValue( ($key + 1), $parameter );
 		}
 
-		$statement->execute();
+		return $statement->execute();
 
-	}
-
-	public function select( $tableName, $sql, $params )
-	{
-		//todo write code to select data from the databse
 	}
 }

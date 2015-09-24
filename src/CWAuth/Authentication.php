@@ -14,6 +14,11 @@ class Authentication
 
 	}
 
+	public function isAuthenticated(  )
+	{
+		// todo check if the user is authenticated return bool
+	}
+
 	public function login( $username, $password, $remember )
 	{
 
