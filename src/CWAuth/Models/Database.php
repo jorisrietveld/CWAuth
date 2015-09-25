@@ -9,6 +9,7 @@ namespace CWAuth\Models;
 
 use CWDatabase\DatabaseConnection;
 
+use CWAuth\Helper\Message;
 
 class Database
 {
@@ -38,13 +39,13 @@ class Database
 	 */
 	private function parseDatabaseConfig( $file = "" )
 	{
-		$file = ( strlen( $file ) < 1 ) ? PROJECT_ROOT . "/Config/dbconfig.xml" : $file;
+		$file = ( strlen( $file ) < 1 ) ? PROJECT_ROOT . DIRECTORY_SEPARATOR . "Config". DIRECTORY_SEPARATOR ."dbconfig.xml" : $file;
 
 		$xmlConfigObject = simplexml_load_file( $file );
 
 		if( $xmlConfigObject == false )
 		{
-			throw new \Exception( "Can't load the database coniguration file from {$file}." );
+			throw new \Exception( Message::getMessage("database.exceptions.missingConfig") );
 		}
 
 		$this->config = (array)$xmlConfigObject->{self::CONFIG_USER_DB};

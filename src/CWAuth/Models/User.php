@@ -8,7 +8,7 @@
 namespace CWAuth\Models;
 
 use PDO;
-
+use CWAuth\Helper\Message;
 
 class User
 {
