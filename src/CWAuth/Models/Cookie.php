@@ -16,5 +16,15 @@ class Cookie
 
 	}
 
+	public function write()
+	{
+
+
+	}
+
+	public function read()
+	{
+	}
+
 
 }

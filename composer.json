@@ -7,7 +7,9 @@
             "email": "jorisrietveld@protonmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "symfony/http-foundation": "^2.7"
+    },
     "autoload": {
         "psr-4": {
             "CWAuth\\": "src/CWAuth/",

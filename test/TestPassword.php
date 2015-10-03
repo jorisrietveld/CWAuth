@@ -9,7 +9,7 @@ require( "header.php" );
 
 try
 {
-	$password = "password";
+	$password = "abc123";
 	//$hash = '$2y$11$gR97fbtpscafnh7Sh9Fkz.er2HLF3FQSeZ5fetqFNXFdBB0ZPxfDa';
 	$options = [ "algo" => PASSWORD_DEFAULT ];
 

@@ -9,7 +9,11 @@ namespace CWAuth;
 
 class User
 {
-	public function login()
+	protected $id;
+	protected $username;
+	protected $email;
+
+	public function login( $username, $password )
 	{
 	}
 
@@ -23,13 +27,43 @@ class User
 
 	}
 
-	public function getAuthorization()
+	public function isAuthenticated()
 	{
 
 	}
 
-	public function isAuthenticated()
+	public function getUsername()
 	{
 
+	}
+
+	public function getId()
+	{
+		
+	}
+
+	public function sendRecoverMail( $email )
+	{
+		
+	}
+
+	public function recoverPassword( $token, $password )
+	{
+
+	}
+
+	public function setActive()
+	{
+
+	}
+
+	public function setPassword( $password )
+	{
+		
+	}
+
+	public function setUsername( $username )
+	{
+		
 	}
 }

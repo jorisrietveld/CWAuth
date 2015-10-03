@@ -1,36 +1,30 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 24-9-15 - 14:53
+ * Date: 25-9-15 - 19:10
  * Licence: GPLv3
  */
 
 namespace CWAuth\Models;
 
-use CWAuth\Helper\Message;
+use \CWAuth\Models\Database as DatabaseModel;
+use \CWAuth\Models\User as UserModel;
 
-class Authentication
+
+class Login
 {
-	private $databaseConnection;
-	private $userModel;
-	private $passwordModel;
-	private $feedback       = [ ];
-	private $updatePassword = false;
+	protected $databaseConnection;
 
-	/**
-	 * Initialize the Database, User and password model.
-	 */
-	public function __construct()
+	public function __construct( DatabaseModel $databaseModel, UserModel $userModel )
 	{
-		$databaseModel            = new Database();
-		$this->databaseConnection = $databaseModel->getDatabaseConnection();
-
-		$this->userModel     = new User();
-		$this->passwordModel = new Password();
+		$this->databaseModel = $databaseModel;
+		$this->userModel = $userModel;;
 	}
 
-	public function loginWithCredentials( $username, $password, $rememberMe = false )
+	public function attemptLogin( $username, $password, $rememberMe = false )
 	{
+		// todo check if blocked.
+
 		$user = $this->userModel->getByUsername( $username );
 
 		if( $user == false )
@@ -51,11 +45,6 @@ class Authentication
 		return true;
 	}
 
-	public function loginWithCookie( )
-	{
-
-	}
-
 	/**
 	 * Get the user from the database based on the userName.
 	 *
@@ -63,7 +52,7 @@ class Authentication
 	 *
 	 * @return bool
 	 */
-	protected function getUser( $username )
+	protected function getUserData( $username )
 	{
 		$user = $this->userModel->getByUsername( $username );
 
@@ -134,4 +123,5 @@ class Authentication
 	{
 
 	}
+
 }
