@@ -15,7 +15,6 @@ class Authentication
 	private $userModel;
 	private $passwordModel;
 	private $feedback       = [ ];
-	private $updatePassword = false;
 
 	/**
 	 * Initialize the Database, User and password model.

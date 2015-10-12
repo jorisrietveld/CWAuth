@@ -8,5 +8,23 @@ namespace CWAuth;
 
 class Authentication
 {
+    public function login( $username, $password, $remember = false )
+    {
 
+    }
+
+    public function logout()
+    {
+
+    }
+
+    public function isAuthenticated()
+    {
+
+    }
+
+    public function getUserData()
+    {
+
+    }
 }

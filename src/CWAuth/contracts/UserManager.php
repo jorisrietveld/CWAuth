@@ -40,7 +40,6 @@ interface UserManager
 
 	public function recoverPassword( $token, $password );
 
-
 	// Update user data
 	public function updatePassword( $id, $password );
 

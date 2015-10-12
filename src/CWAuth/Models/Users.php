@@ -1,12 +1,12 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 3-10-15 - 2:29
+ * Date: 12-10-15 - 16:13
  */
 
-namespace CWAuth;
+namespace CWAuth\Models;
 
-class UsersManager
+class Users
 {
 	public function registerUser( Array $data )
 	{

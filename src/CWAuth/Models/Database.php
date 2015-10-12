@@ -138,20 +138,79 @@ class Database
 
 	/**
 	 * Perform an prepared query on the database.
+	 *
 	 * @param $sql
 	 * @param $parameters
 	 */
-	public function query( $sql, $parameters )
+	public function query( $sql, $parameters = [ ] )
 	{
-		$statement = $this->databaseConnection->prepare( $sql );
-		$statement = (new \PDO(""))->prepare( $sql );
-
-		foreach( $parameters as $key => $parameter )
+		$pdoStatement = $this->databaseConnection->prepare( $sql );
+		if( count( $parameters ) )
 		{
-            $statement->bindValue( ($key + 1), $parameter );
+			$pdoStatement = $this->bindValues( $pdoStatement, $parameters );
+
 		}
 
-		return $statement->execute();
+		if( $pdoStatement->execute() )
+		{
+			return $pdoStatement;
+		}
 
+		return false;
+	}
+
+	/**
+	 * This method binds the $values to the Pdo statement object and returnes the altered pdo
+	 * statement object.
+	 *
+	 * @param $pdoStatement
+	 * @param $values
+	 *
+	 * @return mixed
+	 */
+	protected function bindValues( $pdoStatement, $values )
+	{
+		if( Arr::isAssoc( $values ) )
+		{
+			foreach( $values as $placeholder => $value )
+			{
+				$pdoStatement->bindValue( $placeholder, $value );
+			}
+		}
+		else
+		{
+			foreach( $values as $key => $parameter )
+			{
+				$pdoStatement->bindValue( ( $key + 1 ), $parameter );
+			}
+		}
+
+		return $pdoStatement;
+	}
+
+	/**
+	 * Select colons from an table.
+	 * @param array $colons
+	 * @param       $table
+	 * @param array $where
+	 * @param       $order
+	 */
+	public function select( Array $colons, $table, Array $where = [ ], $order = "" )
+	{
+		$sqlColonsString = "`" . rtrim( join( "`,", $colons ), "," );
+
+		$sql = "SELECT {$sqlColonsString} FROM {$table}";
+
+		if( count( $where ) )
+		{
+			$sql .= $where[ 0 ];
+
+			$whereClause = $where[ 0 ];
+
+			foreach( $where[ 1 ] as $placeholder => $boundValues )
+			{
+
+			}
+		}
 	}
 }
