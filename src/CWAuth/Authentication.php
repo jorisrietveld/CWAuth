@@ -22,6 +22,7 @@ class Authentication
         $login = new Login();
 
         $login->attemptAuthenticate( $username, $password, $remember );
+
     }
 
     public function logout()
