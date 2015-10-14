@@ -20,17 +20,32 @@ class User
 
 	}
 
-	public function updatePassword( $password )
+	public function setPassword( $password )
 	{
 
 	}
 
-	public function updateUsername( $username)
+	public function setUsername( $username )
 	{
 
 	}
 
-	public function updateEmail( $email )
+	public function setEmail( $email )
+	{
+
+	}
+
+	public function getPassword( $password )
+	{
+
+	}
+
+	public function getUsername( $username )
+	{
+
+	}
+
+	public function getEmail( $email )
 	{
 
 	}

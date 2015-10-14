@@ -7,14 +7,17 @@
 
 namespace CWAuth\Models\Storage;
 
-
-
 class Session
 {
+	const SESSION_NAME = "";
+	const SESSION_DOMAIN = "";
 
 	public function __construct()
 	{
-
+		if( session_status() == PHP_SESSION_NONE )
+		{
+			session_start();
+		}
 	}
 
 	public function getName()

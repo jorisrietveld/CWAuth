@@ -7,63 +7,52 @@
 
 namespace CWAuth\Models\Authentication;
 
+use CWAuth\Helper\Message;
 use \CWAuth\Models\Storage\AuthenticationDatabase;
+use CWAuth\Models\Storage\UserTable;
 
 
 class Login
 {
-	protected $authenticationDatabase;
+	protected $userTable;
+	protected $feedback;
+	public $passwordAutoRehash = true;
 
-	public function __construct(  )
+	public function __construct()
 	{
-		$this->authenticationDatabase = new \CWAuth\Models\Storage\AuthenticationDatabase();
+		$this->userTable = new UserTable();
 	}
 
 	public function attemptLogin( $username, $password, $rememberMe = false )
 	{
-		// todo check if blocked.
+		$userRecord = $this->userTable->getUserByUsername( $username );
 
-		$user = $this->userModel->getByUsername( $username );
-
-		if( $user == false )
+		if( $userRecord )
 		{
-			return $this->getFeedback();
-		}
+			if( !$this->checkPassword( $password, $userRecord ))
+			{
+				$this->setFeedback( "login.feedback.passwordMisMatch" );
+			}
 
-		if( !( $this->checkPassword( $password, $user[ "password" ] ) ) )
-		{
-			return $this->getFeedback();
-		}
+			if( $rememberMe )
+			{
 
-		if( $rememberMe )
-		{
-
-		}
-
-		return true;
-	}
-
-	/**
-	 * Get the user from the database based on the userName.
-	 *
-	 * @param $username
-	 *
-	 * @return bool
-	 */
-	protected function getUserData( $username )
-	{
-		$user = $this->userModel->getByUsername( $username );
-
-		if( count( $user ) )
-		{
-			return $user[ 0 ];
+			}
 		}
 		else
 		{
-			$this->setFeedback( Message::getMessage( "authentication.feedback.userNotFound" ) );
-
-			return false;
+			$this->setFeedback( Message::getMessage( "login.feedback.userNotFound", [ "username" => $username ] ) );
 		}
+	}
+
+	public function setRemeberMeCookie()
+	{
+		
+	}
+
+	public function checkIfLoggedIn(  )
+	{
+		
 	}
 
 	/**
@@ -72,29 +61,31 @@ class Login
 	 *
 	 * @param $user
 	 * @param $hash
-	 *
 	 * @return bool
 	 */
-	protected function checkPassword( $user, $hash )
+	protected function checkPassword( $password, $userRecord )
 	{
-		if( $this->passwordModel->passwordCheck( $user[ "password" ], $hash ) )
-		{
-			// If the password needs to be rehashed update the password in the database.
-			if( $this->passwordModel->passwordNeedsRehash( $hash, $user[ "password" ] ) )
-			{
-				$newPassword = $this->passwordModel->passwordHash( $user[ "password" ] );
-				$this->userModel->updatePassword( $user[ "id" ], $newPassword );
-			}
+		$passwordModel = new Password();
 
+		if( $passwordModel->passwordCheck( $password, $userRecord["password"] ));
+		{
+			if( $passwordModel->passwordNeedsRehash( $userRecord["password"], $password) )
+			{
+				// Check if the password needs an rehash, if so rehash the password and store it in the database.
+				$newHash = $passwordModel->passwordHash( $password );
+				if( !$this->userTable->updatePassword( $userRecord["id"], $newHash ) )
+				{
+					throw new \Exception( Message::getMessage( "login.exceptions.cantUpdatePassword" ) );
+				}
+			}
 			return true;
 		}
-		$this->setFeedback( Message::getMessage( "authentication.feedback.passwordMisMatch" ) );
-
 		return false;
 	}
 
 	/**
 	 * Get feedback.
+	 *
 	 * @return array
 	 */
 	protected function getFeedback()
@@ -111,15 +102,4 @@ class Login
 	{
 		$this->feedback = $feedback;
 	}
-
-	protected function saveLogin( $userid )
-	{
-
-	}
-
-	protected function logBadAttempt()
-	{
-
-	}
-
 }

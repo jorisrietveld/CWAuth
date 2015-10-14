@@ -1,22 +1,25 @@
 <?xml version="1.0" standalone="yes"?>
 <messages>
-    <authentication>
-        <exceptions>
-
-        </exceptions>
+    <login>
         <feedback>
             <userNotFound>
-                The user is not found in the database.
+                There was no user found with the username: {{username}}.
             </userNotFound>
             <passwordMisMatch>
-                The password you entered is incorrect.
+                The user was found but the password didn't match witch the hash stored in the database.
             </passwordMisMatch>
         </feedback>
-    </authentication>
+        <exceptions>
+            <cantUpdatePassword>
+                The password needs an rehash but the record can't be updated in the database.
+            </cantUpdatePassword>
+        </exceptions>
+    </login>
     <password>
         <exceptions>
             <saveModeOn>
-                It is not recommenced to provide your own salt, The salt must be randomly generated never use a static salt! Disable save mode to disable this message
+                It is not recommenced to provide your own salt, The salt must be randomly generated never use a static
+                salt! Disable save mode to disable this message
             </saveModeOn>
             <saltToShort>
                 The minimum length of an salt is 22 characters.

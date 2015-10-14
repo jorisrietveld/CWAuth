@@ -78,6 +78,23 @@ class UserTable
 		return false;
 	}
 
+	public function getUserByUsername( $username )
+	{
+		$whereClause     = [ "username = :username", [ ":username" => $username ] ];
+		$limitHack       = "id DESC LIMIT 1";
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause . $limitHack );
+
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		// If there is an user found.
+		if( count( $resultSet ) )
+		{
+			return $resultSet[ 0 ];
+		}
+
+		return false;
+	}
+
 	public function getUserByEmail( $email )
 	{
 		$whereClause     = [ "email = :email", [ ":email" => $email ] ];

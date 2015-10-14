@@ -6,16 +6,20 @@
 
 namespace CWAuth;
 
+use CWAuth\Models\Authentication\Login;
+
+
 class Authentication
 {
     public function __construct(  )
     {
-
     }
 
     public function login( $username, $password, $remember = false )
     {
-        // if passed return $user
+        $login = new Login();
+
+        $login->attemptLogin( $username, $password, $remember );
     }
 
     public function logout()
