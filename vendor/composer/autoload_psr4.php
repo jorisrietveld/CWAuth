@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
     'CWDatabase\\' => array($baseDir . '/../CWDatabase/src/CWDatabase'),
     'CWAuth\\' => array($baseDir . '/src/CWAuth'),
 );

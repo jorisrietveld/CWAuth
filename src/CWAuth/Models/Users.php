@@ -71,17 +71,6 @@ class Users
 
 	}
 
-	// Password recovery
-	public function sendPasswordRecoveryMail( $email )
-	{
-
-	}
-
-	public function recoverPassword( $token, $password )
-	{
-
-	}
-
 	// Update user data
 	public function updatePassword( $id, $password )
 	{

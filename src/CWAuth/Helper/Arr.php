@@ -4,16 +4,14 @@
  * Date: 24-9-15 - 23:31
  */
 
-namespace CWDatabase\Helper;
+namespace CWAuth\Helper;
 
 class Arr
 {
 	/**
 	 * Checks whether an array is an associative.
-
-*
+	 *
 	 * @param $array
-
 	 * @return bool
 	 */
 	public static function isAssoc( Array $array )
@@ -25,7 +23,6 @@ class Arr
 	 * Checks whether an array is numeric.
 	 *
 	 * @param $array
-	 *
 	 * @return bool
 	 */
 	public static function isNumeric( Array $array )
@@ -38,7 +35,6 @@ class Arr
 	 *
 	 * @param $array
 	 * @param $key
-	 *
 	 * @return array
 	 */
 	public static function get( Array $array, $key )
@@ -73,7 +69,6 @@ class Arr
 	 * @param $array
 	 * @param $key
 	 * @param $value
-	 *
 	 * @return mixed
 	 */
 	public static function set( Array &$array, $key, $value )
@@ -107,7 +102,6 @@ class Arr
 	 *
 	 * @param $array
 	 * @param $key
-	 *
 	 * @return bool
 	 */
 	public static function has( Array $array, $key )
@@ -136,10 +130,9 @@ class Arr
 	}
 
 	/**
-	 * Convert an object to an array.
-
-*
-*@param $object
+	 * Convert an object to an array. // TODO REMOVE THIS IS IT BROKEN!
+	 *
+	 * @param $object
 	 * @return array
 	 */
 	public static function objectToArray( $object )
@@ -159,11 +152,18 @@ class Arr
 		return $array;
 	}
 
+	public static function xml2array ( $xmlObject, $out = array () )
+	{
+		foreach ( (array) $xmlObject as $index => $node )
+			$out[$index] = ( is_object ( $node ) ) ? self::xml2array ( $node ) : $node;
+
+		return $out;
+	}
+
 	/**
 	 * This method will return the first key from the array given by the $fromArray argument.
 	 *
 	 * @param array $fromArray
-	 *
 	 * @return mixed
 	 */
 	public function firstKey( Array $fromArray )
@@ -175,7 +175,6 @@ class Arr
 	 * This method will return the last key from the array given by the $fromArray argument.
 	 *
 	 * @param array $fromArray
-	 *
 	 * @return mixed
 	 */
 	public function lastKey( Array $fromArray )
@@ -187,7 +186,6 @@ class Arr
 	 * This method returns the first value from an array given by the $fromArray argument.
 	 *
 	 * @param array $fromArray
-	 *
 	 * @return mixed
 	 */
 	public function firstValue( Array $fromArray )
@@ -199,7 +197,6 @@ class Arr
 	 * This method returns the last value from an array given by the $fromArray argument.
 	 *
 	 * @param array $fromArray
-	 *
 	 * @return mixed
 	 */
 	public function lastValue( Array $fromArray )

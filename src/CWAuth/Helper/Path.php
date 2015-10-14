@@ -4,7 +4,7 @@
  * Date: 10-6-15 - 19:13
  */
 
-namespace CWDatabase\Helper;
+namespace CWAuth\Helper;
 
 class Path
 {
@@ -17,7 +17,6 @@ class Path
 	// TODO write code that checks whether an file exists.
 	public static function fileExists( $path )
 	{
-
 	}
 
 	/**

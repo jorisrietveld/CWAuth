@@ -8,9 +8,14 @@ namespace CWAuth;
 
 class Authentication
 {
-    public function login( $username, $password, $remember = false )
+    public function __construct(  )
     {
 
+    }
+
+    public function login( $username, $password, $remember = false )
+    {
+        // if passed return $user
     }
 
     public function logout()

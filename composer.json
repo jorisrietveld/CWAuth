@@ -1,15 +1,12 @@
 {
-    "name": "jorisrietveld/cwauth",
+    "name": "campuswerk/auth",
     "description": "A simple authentication solution",
     "authors": [
         {
-            "name": "jorisrietveld",
-            "email": "jorisrietveld@protonmail.com"
+            "name": "campuserk",
+            "email": "campuserk@campuswerk.nl"
         }
     ],
-    "require": {
-        "symfony/http-foundation": "^2.7"
-    },
     "autoload": {
         "psr-4": {
             "CWAuth\\": "src/CWAuth/",

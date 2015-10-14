@@ -4,7 +4,7 @@
  * Date: 1-10-15 - 20:23
  */
 
-namespace CWDatabase\Helper;
+namespace CWAuth\Helper;
 
 class Str
 {

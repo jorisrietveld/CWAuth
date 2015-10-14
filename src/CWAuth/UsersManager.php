@@ -10,21 +10,10 @@ class UsersManager
 {
 	public function registerUser( Array $data )
 	{
-
+		// validate data
 	}
 
 	public function deleteUser( $userId )
-	{
-
-	}
-
-	// Manage
-	public function lockUser( $userId )
-	{
-
-	}
-
-	public function unlockUser( $userId )
 	{
 
 	}
@@ -67,17 +56,6 @@ class UsersManager
 	}
 
 	public function getUsersWhere( $where )
-	{
-
-	}
-
-	// Password recovery
-	public function sendPasswordRecoveryMail( $email )
-	{
-
-	}
-
-	public function recoverPassword( $token, $password )
 	{
 
 	}

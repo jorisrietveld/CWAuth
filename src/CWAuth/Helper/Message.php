@@ -4,7 +4,7 @@
  * Date: 25-9-15 - 13:42
  */
 
-namespace CWDatabase\Helper;
+namespace CWAuth\Helper;
 
 
 class Message

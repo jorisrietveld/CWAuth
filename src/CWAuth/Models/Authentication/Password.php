@@ -5,9 +5,9 @@
  * Licence: GPLv3
  */
 
-namespace CWAuth\Models;
+namespace CWAuth\Models\Authentication;
 
-use CWAuth\Helper\Message;
+use \CWAuth\Helper\Message;
 
 class Password
 {
