@@ -7,19 +7,21 @@
 namespace CWAuth;
 
 use CWAuth\Models\Authentication\Login;
+use CWAuth\Models\Storage\Session;
 
 
 class Authentication
 {
     public function __construct(  )
     {
+        $session = new Session();
     }
 
     public function login( $username, $password, $remember = false )
     {
         $login = new Login();
 
-        $login->attemptLogin( $username, $password, $remember );
+        $login->attemptAuthenticate( $username, $password, $remember );
     }
 
     public function logout()

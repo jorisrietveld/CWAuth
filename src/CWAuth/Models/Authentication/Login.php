@@ -9,6 +9,7 @@ namespace CWAuth\Models\Authentication;
 
 use CWAuth\Helper\Message;
 use \CWAuth\Models\Storage\AuthenticationDatabase;
+use CWAuth\Models\Storage\Session;
 use CWAuth\Models\Storage\UserTable;
 
 
@@ -23,7 +24,7 @@ class Login
 		$this->userTable = new UserTable();
 	}
 
-	public function attemptLogin( $username, $password, $rememberMe = false )
+	public function attemptAuthenticate( $username, $password, $rememberMe = false )
 	{
 		$userRecord = $this->userTable->getUserByUsername( $username );
 
@@ -45,14 +46,24 @@ class Login
 		}
 	}
 
-	public function setRemeberMeCookie()
+	protected function writeToSession( $userId, $username )
+	{
+		Session::regenerateId();
+		Session::setAuthenticationData( ["userId" => $userId, "username" => $username ] );
+	}
+
+	protected function setRememberMeCookie()
 	{
 		
 	}
 
-	public function checkIfLoggedIn(  )
+	protected function checkIfLoggedIn(  )
 	{
-		
+		if( Session::getAuthenticationData( "userId" ))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
