@@ -7,6 +7,7 @@
 namespace CWAuth\Models\Storage;
 
 use CWAuth\Models\Storage\AuthenticationDatabase;
+use DebugBar\StandardDebugBar;
 
 
 class UserTable
@@ -16,9 +17,9 @@ class UserTable
 	protected $allFields = [ "username", "email", "password", "active" ];
 	protected $authenticationDatabase;
 
-	public function __construct()
+	public function __construct(  )
 	{
-		$authModel                    = new AuthenticationDatabase();
+		$authModel                    = new AuthenticationDatabase(  );
 		$this->authenticationDatabase = $authModel->getConnection();
 	}
 
@@ -100,7 +101,15 @@ class UserTable
 		$whereClause     = [ "active = :active", [ ":active" => 1 ] ];
 		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
 
-		return $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		// If there are users found.
+		if( count( $resultSet ) )
+		{
+			return $resultSet;
+		}
+
+		return false;
 	}
 
 	public function getInactiveUsers()
@@ -108,7 +117,15 @@ class UserTable
 		$whereClause     = [ "active = :active", [ ":active" => 0 ] ];
 		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
 
-		return $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		// If there is an user found.
+		if( count( $resultSet ) )
+		{
+			return $resultSet;
+		}
+
+		return false;
 	}
 
 	public function getUsers()

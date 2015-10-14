@@ -9,6 +9,7 @@ namespace CWAuth\Models\Storage;
 
 use \CWAuth\Helper\Arr;
 use \CWDatabase\DatabaseConnection;
+use DebugBar\StandardDebugBar;
 
 
 class AuthenticationDatabase
@@ -16,7 +17,7 @@ class AuthenticationDatabase
 	protected $databaseConnection = null;
 	protected $userDatabaseConfig;
 
-	public function __construct()
+	public function __construct(  )
 	{
 		$this->getDatabaseConfiguration();
 	}
@@ -64,5 +65,4 @@ class AuthenticationDatabase
 
 		return $this->databaseConnection;
 	}
-
 }
