@@ -7,36 +7,57 @@
 namespace CWAuth;
 
 use CWAuth\Models\Authentication\Login;
+use CWAuth\Models\Authentication\Logout;
 use CWAuth\Models\Storage\Session;
+use CWAuth\Models\Storage\UserTable;
 
 
 class Authentication
 {
+    protected $sessionModel;
+    protected $loginModel;
+    protected $logoutModel;
+
+    /**
+     * Start the session.
+     */
     public function __construct(  )
     {
-        $session = new Session();
+        $this->sessionModel = new Session();
+        $this->loginModel = new Login();
+        $this->logoutModel = new Logout();
     }
 
+    /**
+     * Return
+     * @param            $username
+     * @param            $password
+     * @param bool|false $remember
+     * @return bool
+     */
     public function login( $username, $password, $remember = false )
     {
-        $login = new Login();
-
-        $login->attemptAuthenticate( $username, $password, $remember );
-
+        return $this->loginModel->attemptAuthenticate( $username, $password, $remember );
     }
+
 
     public function logout()
     {
-
+        $this->logoutModel->deAuthenticateUser();
     }
 
     public function isAuthenticated()
     {
-
+        return $this->loginModel->checkIfLoggedIn();
     }
 
     public function getUserData()
     {
+        return Session::getAllAuthenticationData();
+    }
 
+    public function getFeedback(  )
+    {
+        return $this->loginModel->getFeedback();
     }
 }

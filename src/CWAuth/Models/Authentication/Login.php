@@ -17,7 +17,7 @@ class Login
 {
 	protected $userTable;
 	protected $feedback;
-	public $passwordAutoRehash = true;
+	public    $passwordAutoRehash = true;
 
 	public function __construct()
 	{
@@ -26,43 +26,55 @@ class Login
 
 	public function attemptAuthenticate( $username, $password, $rememberMe = false )
 	{
+		if( $this->checkIfLoggedIn() )
+		{
+			return true;
+		}
+
 		$userRecord = $this->userTable->getUserByUsername( $username );
 
 		if( $userRecord )
 		{
-			if( !$this->checkPassword( $password, $userRecord ))
+			if( !$this->checkPassword( $password, $userRecord ) )
 			{
 				$this->setFeedback( "login.feedback.passwordMisMatch" );
 			}
 
+			$this->writeToSession( $userRecord[ "user_id" ], $userRecord[ "username" ] );
+
 			if( $rememberMe )
 			{
-
+				$this->setRememberMeCookie();
 			}
+
+			return true;
 		}
 		else
 		{
 			$this->setFeedback( Message::getMessage( "login.feedback.userNotFound", [ "username" => $username ] ) );
 		}
+
+		return false;
 	}
 
 	protected function writeToSession( $userId, $username )
 	{
 		Session::regenerateId();
-		Session::setAuthenticationData( ["userId" => $userId, "username" => $username ] );
+		Session::setAuthenticationData( [ "userId" => $userId, "username" => $username ] );
 	}
 
 	protected function setRememberMeCookie()
 	{
-		
+
 	}
 
-	protected function checkIfLoggedIn(  )
+	public function checkIfLoggedIn()
 	{
-		if( Session::getAuthenticationData( "userId" ))
+		if( Session::getAuthenticationData( "userId" ) )
 		{
 			return true;
 		}
+
 		return false;
 	}
 
@@ -78,19 +90,20 @@ class Login
 	{
 		$passwordModel = new Password();
 
-		if( $passwordModel->passwordCheck( $password, $userRecord["password"] ));
+		if( $passwordModel->passwordCheck( $password, $userRecord[ "password" ] ) )
 		{
-			if( $passwordModel->passwordNeedsRehash( $userRecord["password"], $password) )
+			if( $passwordModel->passwordNeedsRehash( $userRecord[ "password" ], $password ) )
 			{
 				// Check if the password needs an rehash, if so rehash the password and store it in the database.
 				$newHash = $passwordModel->passwordHash( $password );
-				if( !$this->userTable->updatePassword( $userRecord["id"], $newHash ) )
+				if( !$this->userTable->updatePassword( $userRecord[ "id" ], $newHash ) )
 				{
 					throw new \Exception( Message::getMessage( "login.exceptions.cantUpdatePassword" ) );
 				}
 			}
 			return true;
 		}
+
 		return false;
 	}
 
@@ -99,7 +112,7 @@ class Login
 	 *
 	 * @return array
 	 */
-	protected function getFeedback()
+	public function getFeedback()
 	{
 		return $this->feedback;
 	}
