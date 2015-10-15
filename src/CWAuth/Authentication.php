@@ -14,7 +14,7 @@ use CWAuth\Models\Storage\UserTable;
 
 class Authentication
 {
-    protected $sessionModel;
+    public $sessionModel;
     protected $loginModel;
     protected $logoutModel;
 
