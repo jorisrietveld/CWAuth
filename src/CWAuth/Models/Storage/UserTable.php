@@ -14,7 +14,7 @@ class UserTable
 {
 	const TABLE = "users";
 
-	protected $allFields = [ "username", "email", "password", "active" ];
+	protected $allFields = [ "id", "username", "email", "password", "active" ];
 	protected $authenticationDatabase;
 
 	public function __construct(  )
