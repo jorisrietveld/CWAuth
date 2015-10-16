@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `Authentication` /*!40100 DEFAULT CHARACTER SET l
 USE `Authentication`;
 -- MySQL dump 10.13  Distrib 5.6.25, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: CampusWerk
+-- Host: localhost    Database: Authentication
 -- ------------------------------------------------------
 -- Server version	5.6.25-0ubuntu0.15.04.1
 
@@ -80,6 +80,7 @@ CREATE TABLE `remeber` (
   `user_id` smallint(5) unsigned DEFAULT NULL,
   `token` char(128) DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
+  `browserInfo` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -129,4 +130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-15 13:26:30
+-- Dump completed on 2015-10-16 13:41:58
