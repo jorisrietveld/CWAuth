@@ -9,6 +9,7 @@ namespace CWAuth\Models\Authentication;
 
 use CWAuth\Helper\Message;
 use \CWAuth\Models\Storage\AuthenticationDatabase;
+use CWAuth\Models\Storage\Cookie;
 use CWAuth\Models\Storage\Session;
 use CWAuth\Models\Storage\UserTable;
 
@@ -44,6 +45,8 @@ class Login
 
 			if( $rememberMe )
 			{
+
+				//todo write code to implement rememberme
 				$this->setRememberMeCookie();
 			}
 
@@ -63,8 +66,17 @@ class Login
 		Session::setAuthenticationData( [ "userId" => $userId, "username" => $username ] );
 	}
 
-	protected function setRememberMeCookie()
+	//return boolean
+	public function authenticateWithCookie()
 	{
+
+	}
+
+	protected function setRememberMeCookie( $username )
+	{
+		$cookieHash = md5( RandomGenerator::getRandomBytes( 30 ) );
+		$cookie = new Cookie();
+		setcookie( "remeber", $cookieHash, time() * strtotime( "+30 days" ), );
 
 	}
 
@@ -101,6 +113,7 @@ class Login
 					throw new \Exception( Message::getMessage( "login.exceptions.cantUpdatePassword" ) );
 				}
 			}
+
 			return true;
 		}
 

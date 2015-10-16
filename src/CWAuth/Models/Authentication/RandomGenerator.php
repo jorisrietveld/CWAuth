@@ -178,4 +178,10 @@ class RandomGenerator
 
 		return $availableSources;
 	}
+
+	public static function getRandomBytes( $count )
+	{
+		$obj = self::__construct();
+		return $obj->getPseudoRandomBytes( $count );
+	}
 }
