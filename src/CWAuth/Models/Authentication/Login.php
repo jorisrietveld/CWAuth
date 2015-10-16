@@ -65,7 +65,7 @@ class Login
 
 	protected function writeToSession( $userId, $username )
 	{
-		Session::regenerateId();
+		//Session::regenerateId();
 		Session::setAuthenticationData( [ "userId" => $userId, "username" => $username ] );
 	}
 
