@@ -16,6 +16,9 @@ use CWAuth\Models\Storage\UserTable;
 
 class Login
 {
+	CONST REMEBER_ME_TIME = "+30 days";
+	const REMEBER_ME_COOKIE_NAME = "CWR";
+
 	protected $userTable;
 	protected $feedback;
 	public    $passwordAutoRehash = true;
@@ -72,12 +75,24 @@ class Login
 
 	}
 
-	protected function setRememberMeCookie( $username )
+	protected function setRememberMeCookie( $userId )
 	{
 		$cookieHash = md5( RandomGenerator::getRandomBytes( 30 ) );
-		$cookie = new Cookie();
-		setcookie( "remeber", $cookieHash, time() * strtotime( "+30 days" ), );
+		$cookie     = new Cookie();
 
+		$cookie->setCookieTime( self::REMEBER_ME_TIME );
+		$cookie->writeCookie( self::REMEBER_ME_COOKIE_NAME, $cookieHash );
+		$cookieParams = $cookie->getCookieParams();
+
+		$this->saveRememberCookie( $cookieHash, $userId, $cookieParams["expire"] );
+	}
+
+	private function saveRememberCookie( $value, $userId, $expire )
+	{
+		$passwordModel = new Password();
+		$cookieHash = $passwordModel->passwordHash( $value );
+
+		$recoverTableModel = "";
 	}
 
 	public function checkIfLoggedIn()

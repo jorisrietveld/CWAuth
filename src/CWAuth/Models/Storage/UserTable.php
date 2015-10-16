@@ -82,7 +82,7 @@ class UserTable
 	{
 		$whereClause     = [ "username = :username", [ ":username" => $username ] ];
 		$limitHack       = "id DESC LIMIT 1";
-		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause . $limitHack );
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause, $limitHack );
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 

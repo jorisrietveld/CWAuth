@@ -53,7 +53,7 @@ class Cookie
 			throw new \LogicException( Message::getMessage( "cookie.exceptions.cookieInvalid" ) );
 		}
 
-		if($this->raw)
+		if( $this->raw )
 		{
 			$this->setRawCookie();
 		}
@@ -66,7 +66,7 @@ class Cookie
 	protected function setCookie()
 	{
 		setcookie(
-			$this->expire,
+			$this->name,
 			$this->value,
 			$this->expire,
 			$this->path,
@@ -79,7 +79,7 @@ class Cookie
 	protected function setRawCookie()
 	{
 		setrawcookie(
-			$this->expire,
+			$this->name,
 			$this->value,
 			$this->expire,
 			$this->path,
@@ -100,5 +100,20 @@ class Cookie
 	public function setCookieTime( $expireDate = "" )
 	{
 		$this->expire = strtotime( $expireDate );
+	}
+
+	public function getCookieParams()
+	{
+		$returnData = [
+			"name"     => $this->name,
+			"value"    => $this->value,
+			"expire"   => $this->expire,
+			"path"     => $this->path,
+			"domain"   => $this->domain,
+			"secure"   => $this->secure,
+			"httpOnly" => $this->httpOnly
+		];
+
+		return $returnData;
 	}
 }
