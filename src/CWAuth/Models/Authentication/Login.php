@@ -44,7 +44,7 @@ class Login
 				$this->setFeedback( "login.feedback.passwordMisMatch" );
 			}
 
-			$this->writeToSession( $userRecord[ "user_id" ], $userRecord[ "username" ] );
+			$this->writeToSession( $userRecord[ "id" ], $userRecord[ "username" ] );
 
 			if( $rememberMe )
 			{
