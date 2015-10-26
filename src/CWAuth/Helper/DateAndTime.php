@@ -11,27 +11,61 @@ use CWDatabase\Helper\DatabaseLiteral;
 
 class DateAndTime
 {
+	/**
+	 * Converts an epoch, date or time string to the mysql date format.
+	 *
+	 * @param string $inputDateTime
+	 * @return string
+	 */
 	public static function ConvertToMysqlDate( $inputDateTime = "now" )
 	{
-		$date = new \DateTime( $inputDateTime );
+		$inputDateTime = is_numeric( $inputDateTime ) ? "@" . $inputDateTime : $inputDateTime;
+
+		$date          = new \DateTime( $inputDateTime );
+
 		return $date->format( "Y-m-d" );
 	}
 
-	public static function ConvertToMysqlTime( $inputDateTime = "now")
+	/**
+	 * Converts an epoch, date or time string to the mysql time format.
+	 *
+	 * @param string $inputDateTime
+	 * @return string
+	 */
+	public static function ConvertToMysqlTime( $inputDateTime = "now" )
 	{
+		$inputDateTime = is_numeric( $inputDateTime ) ? "@" . $inputDateTime : $inputDateTime;
+
 		$date = new \DateTime( $inputDateTime );
+
 		return $date->format( "H:i:s" );
 	}
 
+	/**
+	 * Converts an epoch, date or time string to the mysql datetime format.
+	 *
+	 * @param string $inputDateTime
+	 * @return string
+	 */
 	public static function ConvertToMysqlDateTime( $inputDateTime = "now" )
 	{
+		$inputDateTime = is_numeric( $inputDateTime ) ? "@" . $inputDateTime : $inputDateTime;
 		$date = new \DateTime( $inputDateTime );
+
 		return $date->format( "Y-m-d H:i:s" );
 	}
 
+	/**
+	 * Converts an epoch, date or time string to an epoch value.
+	 *
+	 * @param string $inputDateTime
+	 * @return string
+	 */
 	public static function ConvertToEpoch( $inputDateTime = "now" )
 	{
+		$inputDateTime = is_numeric( $inputDateTime ) ? "@" . $inputDateTime : $inputDateTime;
 		$date = new \DateTime( $inputDateTime );
+
 		return $date->format( "U" );
 	}
 }
