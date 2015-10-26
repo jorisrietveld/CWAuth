@@ -1,17 +1,14 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 14-10-15 - 14:05
+ * Date: 26-10-15 - 14:31
  */
 
 namespace CWAuth\Models\Storage;
 
-use DebugBar\StandardDebugBar;
-
-
-class RecoveryTable
+class RememberTable
 {
-	const TABLE = "recovery";
+	const TABLE = "remember";
 
 	private $allFields = [ ];
 
@@ -23,7 +20,7 @@ class RecoveryTable
 		$this->authenticationDatabase = $authModel->getConnection();
 	}
 
-	public function getRecoveryByUserId( $userId )
+	public function getRememberByUserId( $userId )
 	{
 		$whereClause = [ "id = :id", [ ":id" => $userId ] ];
 
@@ -31,7 +28,7 @@ class RecoveryTable
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
-		// If there is an user found.
+		// If there is a remember record found.
 		if( count( $resultSet ) )
 		{
 			return $resultSet[ 0 ];
@@ -41,7 +38,7 @@ class RecoveryTable
 
 	}
 
-	public function getRecoveryByToken( $token )
+	public function getRememberByToken( $token )
 	{
 		$whereClause = [
 			"token = :token AND active = 1",
@@ -54,7 +51,7 @@ class RecoveryTable
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
-		// If there is an user found.
+		// If there is a remember record found.
 		if( count( $resultSet ) )
 		{
 			return $resultSet[ 0 ];
@@ -63,7 +60,7 @@ class RecoveryTable
 		return false;
 	}
 
-	public function getRecoveryByTokenFilterDate( $token, $maxDate )
+	public function getRememberByTokenFilterDate( $token, $maxDate )
 	{
 		$whereClause = [
 			"token = :token AND active = 1 AND date < :date ",
@@ -77,7 +74,7 @@ class RecoveryTable
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
-		// If there is an user found.
+		/// If there is a remember record found.
 		if( count( $resultSet ) )
 		{
 			return $resultSet[ 0 ];
@@ -86,21 +83,22 @@ class RecoveryTable
 		return false;
 	}
 
-	public function insertRecoveryToken( $userId, $token, $datetime )
+	public function insertRememberToken( $userId, $token, $expires, $browserInfo )
 	{
 		$insertValues = [
-			"user_id"  => $userId,
-			"datetime" => $datetime,
-			"token"    => $token,
-			"active"   => 1
+			"user_id"     => $userId,
+			"expires"     => $expires,
+			"token"       => $token,
+			"active"      => 1,
+			"browserInfo" => $browserInfo
 		];
 
 		return $this->authenticationDatabase->insert( self::TABLE, $insertValues );
 	}
 
-	public function deleteRecoveryTokenByToken( $token )
+	public function deleteRememberTokenByToken( $token )
 	{
-		$dataRecord = $this->getRecoveryByToken( $token );
+		$dataRecord = $this->getRememberByToken( $token );
 
 		if( $dataRecord )
 		{
@@ -114,9 +112,9 @@ class RecoveryTable
 		return false;
 	}
 
-	public function deleteRecoveryTokenByUserId( $userId )
+	public function deleteRememberTokenByUserId( $userId )
 	{
-		$dataRecord = $this->getRecoveryByUserId( $userId );
+		$dataRecord = $this->getRememberByUserId( $userId );
 
 		if( $dataRecord )
 		{
@@ -129,6 +127,4 @@ class RecoveryTable
 		// debug record not found
 		return false;
 	}
-
-
 }

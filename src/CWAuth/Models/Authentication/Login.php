@@ -7,6 +7,7 @@
 
 namespace CWAuth\Models\Authentication;
 
+use CWAuth\Helper\DateAndTime;
 use CWAuth\Helper\Message;
 use \CWAuth\Models\Storage\AuthenticationDatabase;
 use CWAuth\Models\Storage\Cookie;
@@ -17,7 +18,7 @@ use CWAuth\Models\Storage\UserTable;
 
 class Login
 {
-	CONST REMEMBER_ME_TIME = "+30 days";
+	CONST REMEMBER_ME_TIME        = "+30 days";
 	const REMEMBER_ME_COOKIE_NAME = "CWR";
 
 	protected $userTable;
@@ -73,13 +74,30 @@ class Login
 	//return boolean
 	public function authenticateWithCookie()
 	{
+		if( isset( $_COOKIE[ self::REMEMBER_ME_COOKIE_NAME ] ) )
+		{
+			
+		}
+	}
 
+	public function checkCookie( $cookieValue )
+	{
+		$expireDate = DateAndTime::ConvertToMysqlDateTime( self::REMEMBER_ME_TIME );
+
+		$recoverTableModel = new RecoveryTable();
+
+		$recoveryRecord = $recoverTableModel->getRecoveryByTokenFilterDate( $cookieValue, $expireDate );
+
+		if( $recoveryRecord )
+		{
+
+		}
 	}
 
 	protected function setRememberMeCookie( $userId )
 	{
 		// Generate an hash with an random seed that will be the unique identifier for the user.
-		$cookieHash = hash( "sha256", RandomGenerator::getRandomBytes( 30 ) );
+		$cookieHash = md5( RandomGenerator::getRandomBytes( 30 ) );
 		$cookie     = new Cookie();
 
 		$cookie->setCookieTime( self::REMEMBER_ME_TIME );
@@ -87,17 +105,21 @@ class Login
 		// Get the parameters used to write the cookie so we can grab the expire date.
 		$cookieParams = $cookie->getCookieParams();
 
-
-		$this->saveRememberCookie( $cookieHash, $userId, $cookieParams["expire"] );
+		$this->saveRememberCookie( $cookieHash, $userId, $cookieParams[ "expire" ] );
 	}
 
 	private function saveRememberCookie( $value, $userId, $expire )
 	{
 		$passwordModel = new Password();
-		$cookieHash = $passwordModel->passwordHash( $value );
+		$cookieHash    = $passwordModel->passwordHash( $value );
 
 		$recoverTableModel = new RecoveryTable();
-		$recoverTableModel->insertRecoveryToken( $userId, $cookieHash, $expire );
+
+		if( !$recoverTableModel->insertRecoveryToken( $userId, $cookieHash, $expire ) )
+		{
+			$logout = new Logout();
+			$logout->deleteCookie();
+		}
 	}
 
 	public function checkIfLoggedIn()
