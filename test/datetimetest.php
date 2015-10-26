@@ -11,8 +11,21 @@ echo "<hr><h3>Instantiate the DateTime class </h3>";
 
 //$val1 = "2015-10-24 19:45:21";
 //$val1 = time();
-$val1 = "19:45:21";
-
+//$val1 = "19:45:21";
+//$val1 = "2015-10-24";
+//$val1 = "-1 day";
+//$val1 = "+1 day";
+//$val1 = "+1 month";
+//$val1 = "-1 month";
+//$val1 = "+1 year";
+//$val1 = "-1 year";
+//$val1 = "12";
+//$val1 = "yesterday noon";
+//$val1 = "first day of January 2008";
+//$val1 = "last sat of July 2008";
+//$val1 = null;
+//$val1 = "";
+//$val1 = 0;
 
 $cdt = new \CWAuth\Helper\DateAndTime();
 

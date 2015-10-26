@@ -17,8 +17,8 @@ use CWAuth\Models\Storage\UserTable;
 
 class Login
 {
-	CONST REMEBER_ME_TIME = "+30 days";
-	const REMEBER_ME_COOKIE_NAME = "CWR";
+	CONST REMEMBER_ME_TIME = "+30 days";
+	const REMEMBER_ME_COOKIE_NAME = "CWR";
 
 	protected $userTable;
 	protected $feedback;
@@ -78,12 +78,15 @@ class Login
 
 	protected function setRememberMeCookie( $userId )
 	{
-		$cookieHash = md5( RandomGenerator::getRandomBytes( 30 ) );
+		// Generate an hash with an random seed that will be the unique identifier for the user.
+		$cookieHash = hash( "sha256", RandomGenerator::getRandomBytes( 30 ) );
 		$cookie     = new Cookie();
 
-		$cookie->setCookieTime( self::REMEBER_ME_TIME );
-		$cookie->writeCookie( self::REMEBER_ME_COOKIE_NAME, $cookieHash );
+		$cookie->setCookieTime( self::REMEMBER_ME_TIME );
+		$cookie->writeCookie( self::REMEMBER_ME_COOKIE_NAME, $cookieHash );
+		// Get the parameters used to write the cookie so we can grab the expire date.
 		$cookieParams = $cookie->getCookieParams();
+
 
 		$this->saveRememberCookie( $cookieHash, $userId, $cookieParams["expire"] );
 	}

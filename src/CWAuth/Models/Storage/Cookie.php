@@ -100,7 +100,7 @@ class Cookie
 
 	public function setCookieTime( $expireDate = "" )
 	{
-		$this->expire = DateAndTime::getMysqlDateTime( $expireDate );
+		$this->expire = DateAndTime::ConvertToEpoch( $expireDate );
 	}
 
 	public function getCookieParams()
