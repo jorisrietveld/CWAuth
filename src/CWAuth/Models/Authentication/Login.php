@@ -10,6 +10,7 @@ namespace CWAuth\Models\Authentication;
 use CWAuth\Helper\Message;
 use \CWAuth\Models\Storage\AuthenticationDatabase;
 use CWAuth\Models\Storage\Cookie;
+use CWAuth\Models\Storage\RecoveryTable;
 use CWAuth\Models\Storage\Session;
 use CWAuth\Models\Storage\UserTable;
 
@@ -92,7 +93,8 @@ class Login
 		$passwordModel = new Password();
 		$cookieHash = $passwordModel->passwordHash( $value );
 
-		$recoverTableModel = "";
+		$recoverTableModel = new RecoveryTable();
+		$recoverTableModel->insertRecoveryToken( $userId, $cookieHash, $expire );
 	}
 
 	public function checkIfLoggedIn()

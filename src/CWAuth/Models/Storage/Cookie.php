@@ -7,6 +7,7 @@
 
 namespace CWAuth\Models\Storage;
 
+use CWAuth\Helper\DateAndTime;
 use CWAuth\Helper\Message;
 
 
@@ -99,7 +100,7 @@ class Cookie
 
 	public function setCookieTime( $expireDate = "" )
 	{
-		$this->expire = strtotime( $expireDate );
+		$this->expire = DateAndTime::getMysqlDateTime( $expireDate );
 	}
 
 	public function getCookieParams()
