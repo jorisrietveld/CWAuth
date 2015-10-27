@@ -181,7 +181,7 @@ class RandomGenerator
 
 	public static function getRandomBytes( $count )
 	{
-		$obj = self::__construct();
+		$obj = new RandomGenerator();
 		return $obj->getPseudoRandomBytes( $count );
 	}
 }

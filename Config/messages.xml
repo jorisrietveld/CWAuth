@@ -15,13 +15,6 @@
             </cantUpdatePassword>
         </exceptions>
     </login>
-    <cookie>
-        <exceptions>
-            <cookieInvalid>
-                The cookie settings are invalid to write an cookie.
-            </cookieInvalid>
-        </exceptions>
-    </cookie>
     <password>
         <exceptions>
             <saveModeOn>

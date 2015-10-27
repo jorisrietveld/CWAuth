@@ -20,11 +20,13 @@ class RememberTable
 	];
 
 	protected $authenticationDatabase;
+	protected $authenticationModel;
 
-	public function __construct()
+	public function __construct( $enableQueryLogger = false )
 	{
-		$authModel                    = new AuthenticationDatabase();
-		$this->authenticationDatabase = $authModel->getConnection();
+		$this->authenticationModel = new AuthenticationDatabase();
+		$this->authenticationDatabase = $this->authenticationModel->getConnection();
+		$this->authenticationDatabase->logQuerys = $enableQueryLogger;
 	}
 
 	/**
@@ -39,6 +41,28 @@ class RememberTable
 			"user_id = :userId AND active = 1",
 			[
 				":userId" => $userId
+			]
+		];
+
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
+
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		if( count( $resultSet ) )
+		{
+			return $resultSet[ 0 ];
+		}
+
+		return false;
+	}
+
+	public function getRememberByUserIdFilterDate( $userId, $currentDate )
+	{
+		$whereClause = [
+			"user_id = :userId AND active = 1 AND :currentDate < expires",
+			[
+				":userId"      => $userId,
+				":currentDate" => $currentDate
 			]
 		];
 
@@ -135,11 +159,11 @@ class RememberTable
 	public function insertRememberToken( $userId, $token, $expires, $browserInfo )
 	{
 		$insertValues = [
-			"user_id"     => $userId,
-			"expires"     => $expires,
-			"token"       => $token,
-			"active"      => 1,
-			"browserInfo" => $browserInfo
+			"user_id"      => $userId,
+			"expires"      => $expires,
+			"token"        => $token,
+			"active"       => 1,
+			"browser_info" => $browserInfo
 		];
 
 		return $this->authenticationDatabase->insert( self::TABLE, $insertValues );
@@ -214,5 +238,10 @@ class RememberTable
 
 		// debug record not found
 		return false;
+	}
+
+	public function getAllQuerys(  )
+	{
+		return $this->authenticationDatabase->getAllQuerys();
 	}
 }

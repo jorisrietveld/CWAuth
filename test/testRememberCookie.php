@@ -6,6 +6,15 @@
 
 require( "header.php" );
 
-$rememberMe = new \CWAuth\Models\Authentication\RememberMeCookie();
+try
+{
+	$rememberMe = new \CWAuth\Models\Authentication\RememberMeCookie();
 
-$rememberMe->setAnRememberMeCookie( "1" );
+	//$rememberMe->setAnRememberMeCookie( "1" );
+
+	var_dump( $rememberMe->checkRememberMeCookie() );
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}

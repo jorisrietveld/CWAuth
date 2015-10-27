@@ -163,6 +163,4 @@ class RecoveryTable
 		// debug record not found
 		return false;
 	}
-
-
 }

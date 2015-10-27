@@ -49,9 +49,9 @@ class Cookie
 		$this->value = !empty( $value ) ? $value : $this->value;
 		$this->raw   = is_bool( $raw ) ? $raw : $this->raw;
 
-		if( empty( $this->name ) || empty( $this->value ) || $this->expire )
+		if( empty( $this->name ) || empty( $this->value ) || empty( $this->expire ) )
 		{
-			throw new \LogicException( Message::getMessage( "cookie.exceptions.cookieInvalid" ) );
+			// todo logic exception: invalid cookie.
 		}
 
 		if( $this->raw )
