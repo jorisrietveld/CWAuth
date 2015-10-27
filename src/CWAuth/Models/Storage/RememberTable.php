@@ -12,11 +12,11 @@ class RememberTable
 
 	private $allFields = [
 		"id",
-	    "user_id",
-	    "token",
-	    "expires",
-	    "browser_info",
-	    "active"
+		"user_id",
+		"token",
+		"expires",
+		"browser_info",
+		"active"
 	];
 
 	protected $authenticationDatabase;
@@ -62,26 +62,28 @@ class RememberTable
 	 */
 	public function getRememberById( $recordId )
 	{
-		$whereClause =[
+		$whereClause = [
 			"id = :id AND active = 1",
-		    [
-			    ":id" => $recordId
-		    ]
+			[
+				":id" => $recordId
+			]
 		];
 
 		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
-		if( count( $resultSet ))
+		if( count( $resultSet ) )
 		{
-			return $resultSet[0];
+			return $resultSet[ 0 ];
 		}
+
 		return false;
 	}
 
 	/**
 	 * Search for an record form the remember table by token.
+	 *
 	 * @param $token
 	 * @return bool
 	 */
@@ -107,13 +109,13 @@ class RememberTable
 		return false;
 	}
 
-	public function getRememberByTokenFilterDate( $token, $expires )
+	public function getRememberByTokenFilterDate( $token, $currentDate )
 	{
 		$whereClause = [
-			"token = :token AND active = 1 AND expires < :expires ",
+			"token = :token AND active = 1 AND expires < :currentDate ",
 			[
-				":token" => $token,
-				":expires"  => $expires
+				":token"       => $token,
+				":currentDate" => $currentDate
 			]
 		];
 
@@ -175,14 +177,37 @@ class RememberTable
 		return false;
 	}
 
-	public function deleteRememberTokenById( $userId )
+	public function deleteRememberTokenById( $Id )
 	{
-		$dataRecord = $this->getRememberById( $userId );
+		$dataRecord = $this->getRememberById( $Id );
 
 		if( $dataRecord )
 		{
-			$setFields = [ "active" => 0 ];
-			$id        = $dataRecord[ "id" ];
+			$setFields = [
+				"active" => 0
+			];
+
+			$id = $dataRecord[ "id" ];
+
+			return $this->authenticationDatabase->update( self::TABLE, $setFields, $id );
+		}
+
+		// debug record not found
+		return false;
+	}
+
+	public function updateRememberRecordById( $recordId, $newToken, $newExpireDate )
+	{
+		$dataRecord = $this->getRememberById( $recordId );
+
+		if( $dataRecord )
+		{
+			$setFields = [
+				"token"  => $newToken,
+				"expire" => $newExpireDate
+			];
+
+			$id = $dataRecord[ "id" ];
 
 			return $this->authenticationDatabase->update( self::TABLE, $setFields, $id );
 		}
