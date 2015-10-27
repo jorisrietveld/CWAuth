@@ -13,7 +13,13 @@ class RecoveryTable
 {
 	const TABLE = "recovery";
 
-	private $allFields = [ ];
+	private $allFields = [
+		"id",
+		"user_id",
+		"token",
+		"expires",
+		"active"
+	];
 
 	protected $authenticationDatabase;
 
@@ -25,7 +31,35 @@ class RecoveryTable
 
 	public function getRecoveryByUserId( $userId )
 	{
-		$whereClause = [ "id = :id", [ ":id" => $userId ] ];
+		$whereClause = [
+			"user_id = :id AND active = 1",
+			[
+				":id" => $userId
+			]
+		];
+
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
+
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		// If there is an user found.
+		if( count( $resultSet ) )
+		{
+			return $resultSet[ 0 ];
+		}
+
+		return false;
+
+	}
+
+	public function getRecoveryById( $userId )
+	{
+		$whereClause = [
+			"id = :id AND active = 1",
+			[
+				":id" => $userId
+			]
+		];
 
 		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
 
@@ -66,7 +100,7 @@ class RecoveryTable
 	public function getRecoveryByTokenFilterDate( $token, $maxDate )
 	{
 		$whereClause = [
-			"token = :token AND active = 1 AND date < :date ",
+			"token = :token AND active = 1 AND expires > :date ",
 			[
 				":token" => $token,
 				":date"  => $maxDate
@@ -86,11 +120,11 @@ class RecoveryTable
 		return false;
 	}
 
-	public function insertRecoveryToken( $userId, $token, $datetime )
+	public function insertRecoveryToken( $userId, $token, $expires )
 	{
 		$insertValues = [
 			"user_id"  => $userId,
-			"datetime" => $datetime,
+			"expires" => $expires,
 			"token"    => $token,
 			"active"   => 1
 		];

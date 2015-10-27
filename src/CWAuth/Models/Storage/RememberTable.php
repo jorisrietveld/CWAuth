@@ -10,7 +10,14 @@ class RememberTable
 {
 	const TABLE = "remember";
 
-	private $allFields = [ ];
+	private $allFields = [
+		"id",
+	    "user_id",
+	    "token",
+	    "expires",
+	    "browser_info",
+	    "active"
+	];
 
 	protected $authenticationDatabase;
 
@@ -20,24 +27,64 @@ class RememberTable
 		$this->authenticationDatabase = $authModel->getConnection();
 	}
 
+	/**
+	 * Search for an record from the remember table by user id.
+	 *
+	 * @param $userId
+	 * @return bool
+	 */
 	public function getRememberByUserId( $userId )
 	{
-		$whereClause = [ "id = :id", [ ":id" => $userId ] ];
+		$whereClause = [
+			"user_id = :userId AND active = 1",
+			[
+				":userId" => $userId
+			]
+		];
 
 		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
-		// If there is a remember record found.
 		if( count( $resultSet ) )
 		{
 			return $resultSet[ 0 ];
 		}
 
 		return false;
-
 	}
 
+	/**
+	 * Search for an record from the remember table by its id.
+	 *
+	 * @param $recordId
+	 * @return bool
+	 */
+	public function getRememberById( $recordId )
+	{
+		$whereClause =[
+			"id = :id AND active = 1",
+		    [
+			    ":id" => $recordId
+		    ]
+		];
+
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause );
+
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		if( count( $resultSet ))
+		{
+			return $resultSet[0];
+		}
+		return false;
+	}
+
+	/**
+	 * Search for an record form the remember table by token.
+	 * @param $token
+	 * @return bool
+	 */
 	public function getRememberByToken( $token )
 	{
 		$whereClause = [
@@ -60,13 +107,13 @@ class RememberTable
 		return false;
 	}
 
-	public function getRememberByTokenFilterDate( $token, $maxDate )
+	public function getRememberByTokenFilterDate( $token, $expires )
 	{
 		$whereClause = [
-			"token = :token AND active = 1 AND date < :date ",
+			"token = :token AND active = 1 AND expires < :expires ",
 			[
 				":token" => $token,
-				":date"  => $maxDate
+				":expires"  => $expires
 			]
 		];
 
@@ -115,6 +162,22 @@ class RememberTable
 	public function deleteRememberTokenByUserId( $userId )
 	{
 		$dataRecord = $this->getRememberByUserId( $userId );
+
+		if( $dataRecord )
+		{
+			$setFields = [ "active" => 0 ];
+			$id        = $dataRecord[ "id" ];
+
+			return $this->authenticationDatabase->update( self::TABLE, $setFields, $id );
+		}
+
+		// debug record not found
+		return false;
+	}
+
+	public function deleteRememberTokenById( $userId )
+	{
+		$dataRecord = $this->getRememberById( $userId );
 
 		if( $dataRecord )
 		{
