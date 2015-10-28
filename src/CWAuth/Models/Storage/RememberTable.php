@@ -228,12 +228,10 @@ class RememberTable
 		{
 			$setFields = [
 				"token"  => $newToken,
-				"expire" => $newExpireDate
+				"expires" => $newExpireDate
 			];
 
-			$id = $dataRecord[ "id" ];
-
-			return $this->authenticationDatabase->update( self::TABLE, $setFields, $id );
+			return $this->authenticationDatabase->update( self::TABLE, $setFields, $recordId );
 		}
 
 		// debug record not found

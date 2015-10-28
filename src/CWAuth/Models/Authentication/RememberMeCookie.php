@@ -19,13 +19,15 @@ class RememberMeCookie
 
 	protected $userTable;
 	protected $rememberTable;
+	protected $cookie;
 
 	protected $feedback;
 
 	public function __construct()
 	{
 		$this->userTable     = new UserTable();
-		$this->rememberTable = new RememberTable( );
+		$this->rememberTable = new RememberTable();
+		$this->cookie = new Cookie();
 	}
 
 	public function checkRememberMeCookie()
@@ -37,8 +39,8 @@ class RememberMeCookie
 
 			// Get the token and user id from the cookie value
 			$cookieValueSegments = $this->extractDataFromCookieValue( $cookieValue );
-			$userId      = $cookieValueSegments[ 1 ];
-			$cookieValue = $cookieValueSegments[ 0 ];
+			$userId              = $cookieValueSegments[ 1 ];
+			$cookieValue         = $cookieValueSegments[ 0 ];
 
 			$rememberRecord = $this->rememberTable->getRememberByUserIdFilterDate( $userId, $currentTime );
 
@@ -49,12 +51,16 @@ class RememberMeCookie
 				if( !$rememberRecord[ "browser_info" ] == $_SERVER[ "HTTP_USER_AGENT" ] )
 				{
 					$this->rememberTable->deleteRememberTokenById( $rememberRecord[ "id" ] );
+
 					return false;
 				}
+				//return true;
+				// todo implement an way to update the cookie
+				$this->updateAnRememberMeCookie( $rememberRecord[ "id" ], $rememberRecord["user_id"] );
 				return true;
-
 			}
 		}
+
 		return false;
 	}
 
@@ -68,16 +74,15 @@ class RememberMeCookie
 
 		// Generate an hash with an random seed that will be the unique identifier for the user.
 		$cookieValue = md5( RandomGenerator::getRandomBytes( 30 ) );
-		$cookie      = new Cookie();
 
 		$cookieValue = $this->insertUserIdInCookieValue( $userId, $cookieValue );
 
 		$expireDate = DateAndTime::ConvertToMysqlDateTime( self::REMEMBER_ME_TIME );
 
 		// Set the expire time for the cookie and send it to the user.
-		$cookie->setCookieTime( $expireDate );
+		$this->cookie->setCookieTime( $expireDate );
 
-		$cookie->writeCookie( self::REMEMBER_ME_COOKIE_NAME, $cookieValue );
+		$this->cookie->writeCookie( self::REMEMBER_ME_COOKIE_NAME, $cookieValue );
 
 		$this->saveAnRememberCookieToTheDatabase( $cookieValue, $userId, $expireDate );
 	}
@@ -106,14 +111,28 @@ class RememberMeCookie
 	 * This method can be called when an user logs in with an remember me cookie. It will delete the old cookie
 	 * and update it with an new one.
 	 */
-	protected function updateAnRememberMeCookie( $cookieId )
+	protected function updateAnRememberMeCookie( $rememberRecordId, $userId )
 	{
+		$newCookieValue = md5( RandomGenerator::getRandomBytes( 30 ) );
 
+		$newCookieValue = $this->insertUserIdInCookieValue( $userId, $newCookieValue );
+
+		$newExpireDate = DateAndTime::ConvertToMysqlDateTime( self::REMEMBER_ME_TIME );
+
+		// Set an new expire time for the cookie and send it to the user.
+		$this->cookie->setCookieTime( $newExpireDate );
+
+		$this->cookie->writeCookie( self::REMEMBER_ME_COOKIE_NAME, $newCookieValue );
+
+		$this->rememberTable->updateRememberRecordById( (int)$rememberRecordId, $newCookieValue, $newExpireDate );
 	}
 
-	public function deleteAnRememberMeCookie()
+	public function deleteAnRememberMeCookie( $user_id )
 	{
+		//todo implement an way to delete the cookie from the database.
+		$this->rememberTable->deleteRememberTokenByUserId( $user_id );
 
+		$this->cookie->deleteCookie( self::REMEMBER_ME_COOKIE_NAME );
 	}
 
 	private function insertUserIdInCookieValue( $userId, $cookieValue )

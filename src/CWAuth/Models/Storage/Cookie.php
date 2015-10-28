@@ -94,6 +94,7 @@ class Cookie
 	{
 		$this->name = $name;
 		$this->setCookieTime( "-1 day" );
+		$this->value = false;
 		$this->setCookie();
 		unset( $_COOKIE[ $name ] );
 	}
