@@ -6,11 +6,16 @@
 
 namespace CWAuth;
 
+use CWAuth\Models\Authentication\Register;
+
+
 class UsersManager
 {
-	public function registerUser( Array $data )
+	public function registerUser( $username, $password, $email )
 	{
-		// validate data
+		$registerModel = new Register();
+
+		return $registerModel->registerUser( $username, $password, $email );
 	}
 
 	public function deleteUser( $userId )
@@ -50,7 +55,7 @@ class UsersManager
 
 	}
 
-	public function getUsers( )
+	public function getUsers()
 	{
 
 	}
@@ -66,7 +71,7 @@ class UsersManager
 
 	}
 
-	public function updateUsername( $id, $username)
+	public function updateUsername( $id, $username )
 	{
 
 	}
