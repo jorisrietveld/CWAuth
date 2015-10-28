@@ -57,7 +57,7 @@ class RememberMeCookie
 				//return true;
 				// todo implement an way to update the cookie
 				$this->updateAnRememberMeCookie( $rememberRecord[ "id" ], $rememberRecord["user_id"] );
-				return true;
+				return $rememberRecord["user_id"];
 			}
 		}
 
@@ -129,7 +129,6 @@ class RememberMeCookie
 
 	public function deleteAnRememberMeCookie( $user_id )
 	{
-		//todo implement an way to delete the cookie from the database.
 		$this->rememberTable->deleteRememberTokenByUserId( $user_id );
 
 		$this->cookie->deleteCookie( self::REMEMBER_ME_COOKIE_NAME );
@@ -140,7 +139,7 @@ class RememberMeCookie
 		return $cookieValue . "||{$userId}";
 	}
 
-	private function extractDataFromCookieValue( $cookieValue )
+	public function extractDataFromCookieValue( $cookieValue )
 	{
 		$segments = explode( "||", $cookieValue );
 

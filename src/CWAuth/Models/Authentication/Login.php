@@ -20,12 +20,15 @@ use CWAuth\Models\Storage\UserTable;
 class Login
 {
 	protected $userTable;
+	protected $rememberMe;
+
 	protected $feedback;
 	public    $passwordAutoRehash = true;
 
 	public function __construct()
 	{
-		$this->userTable = new UserTable();
+		$this->userTable  = new UserTable();
+		$this->rememberMe = new RememberMeCookie();
 	}
 
 	/**
@@ -44,7 +47,15 @@ class Login
 			return true;
 		}
 
-		// todo check if an remember cookie is set.
+		if( $this->rememberMe->checkRememberMeCookie() )
+		{
+			$rememberMe = $this->rememberMe;
+			$valueSegments = $this->rememberMe->extractDataFromCookieValue( $_COOKIE[ $rememberMe::REMEMBER_ME_COOKIE_NAME ] );
+			$userId = $valueSegments[1];
+
+			// If it is sure the cookie can be trusted log him in.
+			$this->authenticateUserByUserId( $userId );
+		}
 
 		$userRecord = $this->userTable->getUserByUsername( $username );
 
@@ -59,8 +70,7 @@ class Login
 
 			if( $rememberMe )
 			{
-				//todo write code to implement rememberme
-				$this->setRememberMeCookie( $userRecord[ "id" ] );
+				$this->rememberMe->setAnRememberMeCookie( $userRecord[ "id" ] );
 			}
 
 			return true;
