@@ -15,7 +15,7 @@ class Session
 	const SESSION_COOKIE_NAME = "CampusWerk";
 	const SESSION_PREFIX      = "auth";
 
-	const SESSION_DOMAIN    = ".localhost";
+	const SESSION_DOMAIN    = "";
 	const SESSION_SECURE    = false;
 	const SESSION_HTTP_ONLY = true;
 	const SESSION_PATH      = "/";
@@ -39,7 +39,7 @@ class Session
 	 *
 	 * @param array $sessionCookieParams
 	 */
-	public function sessionStart( $sessionCookieParams = [] )
+	public function sessionStart( $sessionCookieParams = [ ] )
 	{
 		$this->sessionCookieParams = $sessionCookieParams;
 
@@ -58,12 +58,13 @@ class Session
 			session_name( self::SESSION_COOKIE_NAME );
 			// Finally start the session and define the authentication session.
 			session_start();
-			$_SESSION[ self::SESSION_PREFIX ] = [];
+			$_SESSION[ self::SESSION_PREFIX ] = [ ];
 		}
 	}
 
 	/**
-	 * Return the session get cookie params configured in php.ini or the overridden params after calling set cookie params.
+	 * Return the session get cookie params configured in php.ini or the overridden params after calling set cookie
+	 * params.
 	 */
 	public function getCookieParams()
 	{
@@ -72,7 +73,7 @@ class Session
 
 	/**
 	 * Set the session runtime settings. do not use this function after the session has started it will have no effect.
-	 * 
+	 *
 	 * @param $lifetime
 	 * @param $path
 	 * @param $domain
@@ -112,9 +113,10 @@ class Session
 
 	/**
 	 * Get all data stored in the authentication session.
+	 *
 	 * @return mixed
 	 */
-	public static function getAllAuthenticationData(  )
+	public static function getAllAuthenticationData()
 	{
 		return $_SESSION[ self::SESSION_PREFIX ];
 	}

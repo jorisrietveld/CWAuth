@@ -4,6 +4,9 @@
  * Date: 28-10-15 - 11:12
  */
 require( "header.php" );
+$session = new \CWAuth\Models\Storage\Session();
+$session->sessionStart();
+
 echo <<<HTML
 <!DOCTYPE html>
 <html lang="en">

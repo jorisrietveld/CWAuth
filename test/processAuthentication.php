@@ -4,10 +4,7 @@
  * Date: 28-10-15 - 15:29
  */
 function thisIsTheIndex()
-{
-}
-
-;
+{};
 try
 {
 	require( "header.php" );
