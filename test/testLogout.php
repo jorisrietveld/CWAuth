@@ -1,13 +1,13 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 28-10-15 - 11:12
+ * Date: 28-10-15 - 19:05
  */
 
-session_name( "CampusWerkSession" );
-session_start();
-
 require( "header.php" );
+
+$session = new \CWAuth\Models\Storage\Session();
+$session->sessionStart();
 
 echo <<<HTML
 <!DOCTYPE html>
@@ -61,7 +61,7 @@ body {
   border-top-right-radius: 0;
 }
 #result{
-	width: 800px;
+    width:900px;
 	margin: 0 auto;
 }
 </style>
@@ -69,57 +69,29 @@ body {
 HTML;
 echo <<<HTML
 <body>
-    <h1 style="width: 100%; text-align:center;">Campuswerk Authentication test page</h1>
+    <h1 style="width: 100%; text-align:center;">Campuswerk Deauthentication test page</h1>
 
 	<div class="container" style="background-color: #eee;; width: 400px; height: 300px; border-radius:20px;;">
-
-	<form class="form-signin" method="post" action="processAuthentication.php" id="loginForm">
-		<h2 class="form-signin-heading"></h2>
-
-		<label for="inputEmail" class="sr-only">username</label>
-		<input name="username" type="text" id="username" class="form-control" placeholder="username" autofocus required>
-
-		<label for="inputPassword" class="sr-only">Password</label>
-		<input name="password" type="password" id="password" class="form-control" placeholder="password" required>
-
-		<div class="checkbox">
-		<label>
-			<input name="remember" id="remember" type="checkbox" value="1"> Remember me
-		</label>
-
-		</div>
-
-		<button class="btn btn-lg btn-primary btn-block" id="loginSubmit" type="submit">Sign in</button>
-
+	<form class="form-signin" id="loginForm">
+		<button class="btn btn-lg btn-primary btn-block" id="loginSubmit" type="submit">Sign out</button>
 	</form>
 	</div>
 </body>
 <div id="result"></div>
 </html>
- <!--<script>
+<script>
     	$( "#loginForm" ).submit(function( event ) {
 		event.preventDefault();
 
 		var dataObject = {
-			username : $("#username").val(),
-			password : $("#password").val(),
-			remember : $("#remember").is(":checked")
+			logout : true
 		};
 
-	    var posting = $.post( "processAuthentication.php", dataObject );
+	    var posting = $.post( "processLogout.php", dataObject );
+
       	posting.done(function( data ) {
-      		if( data == "sucess" )
-      		{
-      			window.location = "testAuthentication.php";
-      		}
     		$( "#result" ).empty().append( data );
   		});
     });
-    </script>-->
-
+    </script>
 HTML;
-
-if( isset( $_SESSION[ "authentication" ] ) )
-{
-	var_dump( $_SESSION[ "authentication" ] );
-}

@@ -6,21 +6,25 @@
 
 namespace CWAuth\Models\Authentication;
 
+use CWAuth\Models\Storage\AuthenticationSession;
 use CWAuth\Models\Storage\Cookie;
-use CWAuth\Models\Storage\Session;
 
 
 class Logout
 {
 	public function deAuthenticateUser(  )
 	{
-		Session::regenerateId( true );
+		session_regenerate_id(true);
+
+		$authenticationSession = new AuthenticationSession();
+		$authenticationSession->removeSessionData();
+
 		$this->deleteCookie();
 	}
 
 	public function deleteCookie()
 	{
 		$cookie = new Cookie();
-		$cookie->deleteCookie( Login::REMEMBER_ME_COOKIE_NAME );
+		$cookie->deleteCookie( RememberMeCookie::REMEMBER_ME_COOKIE_NAME );
 	}
 }

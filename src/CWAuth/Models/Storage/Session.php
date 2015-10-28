@@ -12,7 +12,7 @@ use CWAuth\Helper\Arr;
 
 class Session
 {
-	const SESSION_COOKIE_NAME = "CampusWerk";
+	const SESSION_COOKIE_NAME = "CampusWerkSession";
 	const SESSION_PREFIX      = "auth";
 
 	const SESSION_DOMAIN    = "";
@@ -54,7 +54,7 @@ class Session
 			// If there are cookie params set in the constructor override the just defined variables.
 			extract( $this->sessionCookieParams, EXTR_OVERWRITE );
 
-			$this->setCookieParams( $lifetime, $path, $domain, $secure, $httponly );
+			//$this->setCookieParams( $lifetime, $path, $domain, $secure, $httponly );
 			session_name( self::SESSION_COOKIE_NAME );
 			// Finally start the session and define the authentication session.
 			session_start();

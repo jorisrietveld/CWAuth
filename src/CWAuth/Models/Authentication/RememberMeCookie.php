@@ -66,11 +66,12 @@ class RememberMeCookie
 
 	public function setAnRememberMeCookie( $userId )
 	{
-		if( $this->checkRememberMeCookie() )
+		var_dump(__METHOD__);
+		/*f( $this->checkRememberMeCookie() )
 		{
 			// todo debug: log error.
 			return;
-		}
+		}*/
 
 		// Generate an hash with an random seed that will be the unique identifier for the user.
 		$cookieValue = md5( RandomGenerator::getRandomBytes( 30 ) );

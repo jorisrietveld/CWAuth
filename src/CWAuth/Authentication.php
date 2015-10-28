@@ -8,56 +8,68 @@ namespace CWAuth;
 
 use CWAuth\Models\Authentication\Login;
 use CWAuth\Models\Authentication\Logout;
+use CWAuth\Models\Authentication\Register;
+use CWAuth\Models\Authentication\RememberMeCookie;
 use CWAuth\Models\Storage\Session;
 use CWAuth\Models\Storage\UserTable;
 
 
 class Authentication
 {
-    public $sessionModel;
-    protected $loginModel;
-    protected $logoutModel;
+	public    $sessionModel;
+	protected $loginModel;
+	protected $logoutModel;
+	protected $rememberMe;
 
-    /**
-     * Start the session.
-     */
-    public function __construct(  )
-    {
-        $this->sessionModel = new Session();
-        $this->loginModel = new Login();
-        $this->logoutModel = new Logout();
-    }
+	/**
+	 * Start the session.
+	 */
+	public function __construct()
+	{
+		$this->loginModel  = new Login();
+		$this->logoutModel = new Logout();
+		$this->rememberMe = new RememberMeCookie();
+	}
 
-    /**
-     * Return
-     * @param            $username
-     * @param            $password
-     * @param bool|false $remember
-     * @return bool
-     */
-    public function login( $username, $password, $remember = false )
-    {
-        return $this->loginModel->attemptAuthenticate( $username, $password, $remember );
-    }
+	/**
+	 * Return
+	 *
+	 * @param            $username
+	 * @param            $password
+	 * @param bool|false $remember
+	 * @return bool
+	 */
+	public function login( $username, $password, $remember = false )
+	{
+		return $this->loginModel->attemptAuthenticate( $username, $password, $remember );
+	}
 
 
-    public function logout()
-    {
-        $this->logoutModel->deAuthenticateUser();
-    }
+	public function logout()
+	{
+		$this->logoutModel->deAuthenticateUser();
+	}
 
-    public function isAuthenticated()
-    {
-        return $this->loginModel->checkIfLoggedIn();
-    }
+	public function checkRememberMeCookie()
+	{
+		return $this->rememberMe->checkRememberMeCookie();
+	}
 
-    public function getUserData()
-    {
-        return Session::getAllAuthenticationData();
-    }
+	public function isAuthenticated()
+	{
+		return isset( $_SESSION[ "authentication" ][ "username" ] );
+	}
 
-    public function getFeedback(  )
-    {
-        return $this->loginModel->getFeedback();
-    }
+	public function getUserData()
+	{
+		if( isset( $_SESSION[ "authentication" ][ "username" ] ) && isset( $_SESSION[ "authentication" ][ "userId" ] ) )
+		{
+			return $_SESSION[ "authentication" ];
+		}
+	}
+
+	public function getFeedback()
+	{
+		return $this->loginModel->getFeedback();
+	}
 }

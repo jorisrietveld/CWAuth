@@ -31,7 +31,7 @@ class Register
 			"email"    => $email
 		];
 
-		if( $this->checkUniqueEmail( $email ) || $this->checkUniqueUsername( $username ) )
+		if( !$this->checkUniqueEmail( $email ) || !$this->checkUniqueUsername( $username ) )
 		{
 			return false;
 		}
@@ -43,6 +43,7 @@ class Register
 		}
 		else
 		{
+			//var_dump(__METHOD__);
 			// todo debug: the user couldn't be resisted.
 			return false;
 		}

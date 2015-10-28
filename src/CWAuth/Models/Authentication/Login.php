@@ -7,13 +7,8 @@
 
 namespace CWAuth\Models\Authentication;
 
-use CWAuth\Helper\DateAndTime;
 use CWAuth\Helper\Message;
-use \CWAuth\Models\Storage\AuthenticationDatabase;
-use CWAuth\Models\Storage\Cookie;
-use CWAuth\Models\Storage\RecoveryTable;
-use CWAuth\Models\Storage\RememberTable;
-use CWAuth\Models\Storage\Session;
+use CWAuth\Models\Storage\AuthenticationSession;
 use CWAuth\Models\Storage\UserTable;
 
 
@@ -44,14 +39,16 @@ class Login
 	{
 		if( $this->checkIfLoggedIn() )
 		{
+			$this->setFeedback( Message::getMessage( "login.feedback.alreadyLoggedIn" ) );
+
 			return true;
 		}
 
 		if( $this->rememberMe->checkRememberMeCookie() )
 		{
-			$rememberMe = $this->rememberMe;
+			$rememberMe    = $this->rememberMe;
 			$valueSegments = $this->rememberMe->extractDataFromCookieValue( $_COOKIE[ $rememberMe::REMEMBER_ME_COOKIE_NAME ] );
-			$userId = $valueSegments[1];
+			$userId        = $valueSegments[ 1 ];
 
 			// If it is sure the cookie can be trusted log him in.
 			$this->authenticateUserByUserId( $userId );
@@ -64,6 +61,7 @@ class Login
 			if( !$this->checkPassword( $password, $userRecord ) )
 			{
 				$this->setFeedback( "login.feedback.passwordMisMatch" );
+				return false;
 			}
 
 			$this->writeToSession( $userRecord[ "id" ], $userRecord[ "username" ] );
@@ -107,8 +105,10 @@ class Login
 	 */
 	protected function writeToSession( $userId, $username )
 	{
-		//Session::regenerateId();
-		Session::setAuthenticationData( [ "userId" => $userId, "username" => $username ] );
+		session_regenerate_id();
+
+		$authSession = new AuthenticationSession();
+		$authSession->writeSessionData( [ "userId" => $userId, "username" => $username ] );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class Login
 	 */
 	public function checkIfLoggedIn()
 	{
-		if( Session::getAuthenticationData( "userId" ) )
+		if( isset( $_SESSION[ "authentication" ][ "username" ] ) )
 		{
 			return true;
 		}
@@ -173,6 +173,6 @@ class Login
 	 */
 	protected function setFeedback( $feedback )
 	{
-		$this->feedback = $feedback;
+		$this->feedback[] = trim($feedback);
 	}
 }

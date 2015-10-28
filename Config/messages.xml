@@ -8,6 +8,9 @@
             <passwordMisMatch>
                 The user was found but the password didn't match witch the hash stored in the database.
             </passwordMisMatch>
+            <alreadyLoggedIn>
+                You are already logged in.
+            </alreadyLoggedIn>
         </feedback>
         <exceptions>
             <cantUpdatePassword>
