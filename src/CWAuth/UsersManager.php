@@ -11,11 +11,16 @@ use CWAuth\Models\Authentication\Register;
 
 class UsersManager
 {
+	protected $registerModel;
+
+	public function __construct(  )
+	{
+		$this->registerModel = new Register();
+	}
+
 	public function registerUser( $username, $password, $email )
 	{
-		$registerModel = new Register();
-
-		return $registerModel->registerUser( $username, $password, $email );
+		return $this->registerModel->registerUser( $username, $password, $email );
 	}
 
 	public function deleteUser( $userId )
@@ -79,5 +84,10 @@ class UsersManager
 	public function updateEmail( $id, $email )
 	{
 
+	}
+
+	public function getFeedback(  )
+	{
+		return $this->registerModel->getFeedback();
 	}
 }

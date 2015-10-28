@@ -63,33 +63,33 @@ body {
 </head>
 HTML;
 echo <<<HTML
-    <body>
-	<h1 style="width: 100%; text-align:center;">Campuswerk Authentication test page</h1>
+<body>
+    <h1 style="width: 100%; text-align:center;">Campuswerk Authentication test page</h1>
 
-    <div class="container" style="background-color: #eee;; width: 400px; height: 300px; border-radius:20px;;">
+	<div class="container" style="background-color: #eee;; width: 400px; height: 300px; border-radius:20px;;">
 
-      <form class="form-signin" id="loginForm">
-        <h2 class="form-signin-heading"></h2>
+	<form class="form-signin" id="loginForm">
+		<h2 class="form-signin-heading"></h2>
 
-        <label for="inputEmail" class="sr-only">username</label>
-        <input type="text" id="username" class="form-control" placeholder="username" autofocus>
+		<label for="inputEmail" class="sr-only">username</label>
+		<input type="text" id="username" class="form-control" placeholder="username" autofocus required>
 
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="password">
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="password" class="form-control" placeholder="password" required>
 
-        <div class="checkbox">
-          <label>
-            <input id="remember" type="checkbox" value="remember-me"> Remember me
-          </label>
+		<div class="checkbox">
+		<label>
+			<input id="remember" type="checkbox" value="remember-me"> Remember me
+		</label>
 
-        </div>
+		</div>
 
-        <button class="btn btn-lg btn-primary btn-block" id="loginSubmit" type="submit">Sign in</button>
+		<button class="btn btn-lg btn-primary btn-block" id="loginSubmit" type="submit">Sign in</button>
 
-      </form>
-    </div>
-  	</body>
-	<div id="result"></div>
+	</form>
+	</div>
+</body>
+<div id="result"></div>
 </html>
 <script>
     	$( "#loginForm" ).submit(function( event ) {

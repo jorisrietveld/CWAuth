@@ -97,9 +97,15 @@ class UserTable
 
 	public function getUserByEmail( $email )
 	{
-		$whereClause     = [ "email = :email", [ ":email" => $email ] ];
+		$whereClause     = [
+			"email = :email",
+			[
+				":email" => $email
+			]
+		];
+
 		$limitHack       = "id DESC LIMIT 1";
-		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause . $limitHack );
+		$pdoStatementObj = $this->authenticationDatabase->select( self::TABLE, $this->allFields, $whereClause, $limitHack );
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 

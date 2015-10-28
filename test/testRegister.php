@@ -1,8 +1,9 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 28-10-15 - 16:07
+ * Date: 28-10-15 - 11:12
  */
+require( "header.php" );
 echo <<<HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -29,9 +30,7 @@ body {
 .form-signin .checkbox {
   margin-bottom: 10px;
 }
-.form-signin .checkbox {
-  font-weight: normal;
-}
+
 .form-signin .form-control {
   position: relative;
   height: auto;
@@ -43,6 +42,11 @@ body {
 }
 .form-signin .form-control:focus {
   z-index: 2;
+}
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 .form-signin input[type="email"] {
   margin-bottom: -1px;
@@ -61,35 +65,30 @@ body {
 </style>
 </head>
 HTML;
-
 echo <<<HTML
-    <body>
-	<h1 style="width: 100%; text-align:center;">Campuswerk Register test page</h1>
+<body>
+    <h1 style="width: 100%; text-align:center;">Campuswerk Authentication test page</h1>
 
-    <div class="container" style="background-color: #eee;; width: 400px; height: 300px; border-radius:20px;;">
+	<div class="container" style="background-color: #eee;; width: 400px; height: 300px; border-radius:20px;;">
 
-      <form class="form-signin" id="loginForm">
-        <h2 class="form-signin-heading"></h2>
+	<form class="form-signin" id="registerForm">
+		<h2 class="form-signin-heading"></h2>
 
-        <label for="inputEmail" class="sr-only">username</label>
-        <input type="text" id="username" class="form-control" placeholder="username" autofocus>
+		<label for="username" class="sr-only">username</label>
+		<input type="text" id="username" class="form-control" placeholder="username" required autofocus>
 
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" class="form-control" placeholder="password">
+		<label for="email" class="sr-only">email</label>
+		<input type="email" id="email" class="form-control" placeholder="email address" required >
 
-        <div class="checkbox">
-          <label>
-            <input id="remember" type="checkbox" value="remember-me"> Remember me
-          </label>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="password" class="form-control" placeholder="password" required>
 
-        </div>
+		<button class="btn btn-lg btn-primary btn-block" id="registerSubmit" type="submit">Register user</button>
 
-        <button class="btn btn-lg btn-primary btn-block" id="loginSubmit" type="submit">Sign in</button>
-
-      </form>
-    </div>
-  	</body>
-	<div id="result"></div>
+	</form>
+	</div>
+</body>
+<div id="result"></div>
 </html>
 <script>
     	$( "#registerForm" ).submit(function( event ) {
@@ -98,13 +97,14 @@ echo <<<HTML
 		var dataObject = {
 			username : $("#username").val(),
 			password : $("#password").val(),
-			remember : $("#remember").is(":checked")
+			email : $("#email").val()
 		};
 
-	    var posting = $.post( "processAuthentication.php", dataObject );
+	    var posting = $.post( "processRegister.php", dataObject );
       	posting.done(function( data ) {
     		$( "#result" ).empty().append( data );
   		});
     });
     </script>
+
 HTML;

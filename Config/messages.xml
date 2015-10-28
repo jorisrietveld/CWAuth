@@ -40,4 +40,14 @@
             </missingConfiguration>
         </exceptions>
     </database>
+    <register>
+        <feedback>
+            <notUniqueEmail>
+                Can not register the user because there is already an user with the email: {{email}}.
+            </notUniqueEmail>
+            <notUniqueUsername>
+                Can not register the user because there is already an user with the username: {{username}}.
+            </notUniqueUsername>
+        </feedback>
+    </register>
 </messages>
