@@ -27,7 +27,7 @@ class RememberMeCookie
 	{
 		$this->userTable     = new UserTable();
 		$this->rememberTable = new RememberTable();
-		$this->cookie = new Cookie();
+		$this->cookie        = new Cookie();
 	}
 
 	public function checkRememberMeCookie()
@@ -54,10 +54,12 @@ class RememberMeCookie
 
 					return false;
 				}
-				//return true;
-				// todo implement an way to update the cookie
-				$this->updateAnRememberMeCookie( $rememberRecord[ "id" ], $rememberRecord["user_id"] );
-				return $rememberRecord["user_id"];
+
+				// Generate an new remember me cookie to limit cookie theft and reset the expire date.
+				$this->updateAnRememberMeCookie( $rememberRecord[ "id" ], $rememberRecord[ "user_id" ] );
+
+				// Return the user id so you can login with it.
+				return $rememberRecord[ "user_id" ];
 			}
 		}
 
@@ -66,7 +68,6 @@ class RememberMeCookie
 
 	public function setAnRememberMeCookie( $userId )
 	{
-		var_dump(__METHOD__);
 		/*f( $this->checkRememberMeCookie() )
 		{
 			// todo debug: log error.

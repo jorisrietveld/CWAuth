@@ -20,9 +20,12 @@ class Login
 	protected $feedback;
 	public    $passwordAutoRehash = true;
 
+	/**
+	 * Instantiate the object, save tue user table model for accessing the user database
+	 */
 	public function __construct()
 	{
-		$this->userTable  = new UserTable();
+		$this->userTable  = new userTable();
 		$this->rememberMe = new RememberMeCookie();
 	}
 
@@ -52,6 +55,8 @@ class Login
 
 			// If it is sure the cookie can be trusted log him in.
 			$this->authenticateUserByUserId( $userId );
+
+			return true;
 		}
 
 		$userRecord = $this->userTable->getUserByUsername( $username );
@@ -61,6 +66,7 @@ class Login
 			if( !$this->checkPassword( $password, $userRecord ) )
 			{
 				$this->setFeedback( "login.feedback.passwordMisMatch" );
+
 				return false;
 			}
 
@@ -93,8 +99,12 @@ class Login
 		if( $userRecord )
 		{
 			$this->writeToSession( $userRecord[ "id" ], $userRecord[ "username" ] );
+
+			return true;
 		}
-		// debug users could not be found in table.
+
+		return false;
+		// todo debug users could not be found in table.
 	}
 
 	/**
@@ -123,7 +133,23 @@ class Login
 			return true;
 		}
 
+		$userId = $this->rememberMe->checkRememberMeCookie();
+
+		if( $userId )
+		{
+			return $this->authenticateUserByUserId( $userId );
+		}
+
 		return false;
+	}
+
+	public function getUserData(  )
+	{
+		if( $this->checkIfLoggedIn() )
+		{
+			if(isset($_SESSION))
+		}
+		return [];
 	}
 
 	/**
@@ -173,6 +199,6 @@ class Login
 	 */
 	protected function setFeedback( $feedback )
 	{
-		$this->feedback[] = trim($feedback);
+		$this->feedback[] = trim( $feedback );
 	}
 }

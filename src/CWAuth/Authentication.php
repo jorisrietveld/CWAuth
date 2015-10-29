@@ -57,11 +57,16 @@ class Authentication
 
 	public function isAuthenticated()
 	{
-		return isset( $_SESSION[ "authentication" ][ "username" ] );
+		$isAuthenticated = $this->loginModel->checkIfLoggedIn();
+
+		return $isAuthenticated;
 	}
 
 	public function getUserData()
 	{
+		//todo remove hack.
+
+		$this->loginModel->getUserData();
 		if( isset( $_SESSION[ "authentication" ][ "username" ] ) && isset( $_SESSION[ "authentication" ][ "userId" ] ) )
 		{
 			return $_SESSION[ "authentication" ];

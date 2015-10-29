@@ -28,8 +28,12 @@ try
 
 		if( $authentication->login( $username, $password, (bool)isset( $remember ) ) )
 		{
-			echo "success";
-			var_dump( $authentication->getFeedback());
+			echo "<h3 style='text-align: center'>The user is authenticated</h3>";
+			if( count( $authentication->getFeedback() ))
+			{
+				echo "<h4>Debug: feedback</h4>";
+				var_dump( $authentication->getFeedback());
+			}
 		}
 		else
 		{
