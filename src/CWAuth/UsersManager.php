@@ -7,90 +7,19 @@
 namespace CWAuth;
 
 use CWAuth\Models\Authentication\Register;
-use CWAuth\Models\Storage\UserTable;
+use CWAuth\Models\Authentication\UserManager;
 
 
 class UsersManager
 {
-	protected $registerModel;
-	protected $userTableModel;
+	public $registerModel;
+	public $userManagerModel;
+	public $usersManagerModel;
 
-	public function __construct(  )
+	public function __construct()
 	{
-		$this->registerModel = new Register();
-		$this->userTableModel = new UserTable();
-	}
-
-	public function registerUser( $username, $password, $email )
-	{
-		return $this->registerModel->registerUser( $username, $password, $email );
-	}
-
-	public function deleteUser( $userId )
-	{
-
-	}
-
-	public function blockUser( $userId )
-	{
-
-	}
-
-	public function unBlockUser( $userId )
-	{
-
-	}
-
-	// Get single user
-	public function getUserById( $userId )
-	{
-
-	}
-
-	public function getUserByEmail( $email )
-	{
-
-	}
-
-	// get multiple users
-	public function getActiveUsers()
-	{
-
-	}
-
-	public function getInactiveUsers()
-	{
-
-	}
-
-	public function getUsers()
-	{
-
-	}
-
-	public function getUsersWhere( $where )
-	{
-
-	}
-
-	// Update user data
-	public function updatePassword( $id, $password )
-	{
-
-	}
-
-	public function updateUsername( $id, $username )
-	{
-
-	}
-
-	public function updateEmail( $id, $email )
-	{
-
-	}
-
-	public function getFeedback(  )
-	{
-		return $this->registerModel->getFeedback();
+		$this->registerModel     = new Register();
+		$this->userManagerModel  = new UserManager();
+		$this->usersManagerModel = new UsersManager();
 	}
 }

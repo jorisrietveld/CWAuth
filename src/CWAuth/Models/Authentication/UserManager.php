@@ -13,7 +13,8 @@ use CWAuth\Models\Storage\UserTable;
 class UserManager
 {
 	protected $userTableModel;
-	protected $errors = [ ];
+	protected $errors   = [ ];
+	protected $feedback = [ ];
 
 	public function __construct()
 	{
@@ -31,7 +32,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.deleteZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.deleteZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -54,7 +55,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.blockZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.blockZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -78,7 +79,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.unBlockZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.unBlockZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -102,7 +103,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.userNotFoundId", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.userNotFoundId", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -125,7 +126,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.userNotFoundEmail", [ "email" => $email ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.userNotFoundEmail", [ "email" => $email ] ) );
 
 			return false;
 		}
@@ -150,7 +151,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.cantUpdatePassword", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdatePassword", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -173,7 +174,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.cantUpdateUsername", [ "id" => $userId, "username" => $username ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdateUsername", [ "id" => $userId, "username" => $username ] ) );
 
 			return false;
 		}
@@ -197,7 +198,8 @@ class UserManager
 				return true;
 			}
 
-			$this->setErrorMessage( Message::getMessage( "userManager.errorMessages.cantUpdateEmail", [ "id" => $userId, "email" => $email ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdateEmail", [ "id" => $userId, "email" => $email ] ) );
+
 			return false;
 		}
 		catch( \Exception $exception )
@@ -216,6 +218,16 @@ class UserManager
 
 	protected function setErrorMessage( $errorMessage )
 	{
-		$this->errors[] = $errorMessage;
+		$this->errors[] = trim( $errorMessage);
+	}
+
+	public function getFeedback()
+	{
+		return $this->feedback;
+	}
+
+	protected function setFeedback( $feedback )
+	{
+		$this->errors[] = trim( $feedback );
 	}
 }
