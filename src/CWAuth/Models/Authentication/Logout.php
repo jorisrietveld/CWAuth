@@ -14,6 +14,7 @@ class Logout
 {
 	public function deAuthenticateUser(  )
 	{
+		// Regenerate the session id and destroy the old session.
 		session_regenerate_id(true);
 
 		$authenticationSession = new AuthenticationSession();

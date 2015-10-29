@@ -53,4 +53,32 @@
             </notUniqueUsername>
         </feedback>
     </register>
+    <userManager>
+        <errorMessages>
+            <deleteZeroRowCount>
+                The user was not deleted, check if the user with {{id}} exists in the database.
+            </deleteZeroRowCount>
+            <blockZeroRowCount>
+                The user was not blocked, check if the user with {{id}} wasn't already blocked.
+            </blockZeroRowCount>
+            <unBlockZeroRowCount>
+                The user was not unblocked, check if the user with {{id}} wasn't already an active user.
+            </unBlockZeroRowCount>
+            <userNotFoundEmail>
+                No user was found in the database with the email {{email}}.
+            </userNotFoundEmail>
+            <userNotFoundId>
+                No user was found in the database with the id {{id}}.
+            </userNotFoundId>
+            <cantUpdateEmail>
+                The users email address was not updated to: {{email}} from the user with id: {{id}}
+            </cantUpdateEmail>
+            <cantUpdateUsername>
+                The users username was not updated to: {{username}} from the user with id: {{id}}
+            </cantUpdateUsername>
+            <cantUpdatePassword>
+                The users password was not updated, from the user with id: {{id}}
+            </cantUpdatePassword>
+        </errorMessages>
+    </userManager>
 </messages>

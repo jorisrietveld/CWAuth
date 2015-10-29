@@ -137,19 +137,38 @@ class Login
 
 		if( $userId )
 		{
-			return $this->authenticateUserByUserId( $userId );
+			return ( $this->authenticateUserByUserId( $userId ) ) ? true : false;
 		}
 
 		return false;
 	}
 
-	public function getUserData(  )
+	/**
+	 * Get the userId from the session and query the user table to get the userdata.
+	 *
+	 * @return array|bool
+	 */
+	public function getUserData()
 	{
 		if( $this->checkIfLoggedIn() )
 		{
-			if(isset($_SESSION))
+			if( isset( $_SESSION[ "authentication" ][ "userId" ] ) )
+			{
+				$userId = $_SESSION[ "authentication" ][ "userId " ];
+
+				$userRecord = $this->userTable->getUserById( $userId );
+
+				// Remove the password hash from the user record.
+				if( isset( $userRecord[ "password" ] ) )
+				{
+					unset( $userRecord[ "password" ] );
+				}
+
+				return $userRecord;
+			}
 		}
-		return [];
+
+		return false;
 	}
 
 	/**

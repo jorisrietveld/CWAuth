@@ -66,6 +66,8 @@ class RememberMeCookie
 		return false;
 	}
 
+
+
 	public function setAnRememberMeCookie( $userId )
 	{
 		/*f( $this->checkRememberMeCookie() )

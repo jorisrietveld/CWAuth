@@ -19,20 +19,20 @@ class Authentication
 	public    $sessionModel;
 	protected $loginModel;
 	protected $logoutModel;
-	protected $rememberMe;
+	protected $rememberMeModel;
 
 	/**
-	 * Start the session.
+	 * Save the login, logout and rememberMe model to the classes property's.
 	 */
 	public function __construct()
 	{
 		$this->loginModel  = new Login();
 		$this->logoutModel = new Logout();
-		$this->rememberMe = new RememberMeCookie();
+		$this->rememberMeModel  = new RememberMeCookie();
 	}
 
 	/**
-	 * Return
+	 * Attempt to authenticate an user with the credentials passed in the arguments.
 	 *
 	 * @param            $username
 	 * @param            $password
@@ -44,17 +44,33 @@ class Authentication
 		return $this->loginModel->attemptAuthenticate( $username, $password, $remember );
 	}
 
-
+	/**
+	 * Destroy the session and unset the rememberMe cookie.
+	 */
 	public function logout()
 	{
 		$this->logoutModel->deAuthenticateUser();
 	}
 
+	/**
+	 * Check if the remember me cookie is valid. If it is valid update the expire date and value hash.
+	 * It returns
+	 *
+	 * @return bool
+	 */
 	public function checkRememberMeCookie()
 	{
-		return $this->rememberMe->checkRememberMeCookie();
+		$checkResult = ( $this->rememberMeModel->checkRememberMeCookie() ) ? true : false;
+
+		return $checkResult;
 	}
 
+	/**
+	 * Check whether the user is authenticated. Also check if there is an remember me cookie, if so authenticate
+	 * the user with the remember me cookie and return an boolean.
+	 *
+	 * @return bool
+	 */
 	public function isAuthenticated()
 	{
 		$isAuthenticated = $this->loginModel->checkIfLoggedIn();
@@ -62,17 +78,21 @@ class Authentication
 		return $isAuthenticated;
 	}
 
+	/**
+	 * Return the user record
+	 *
+	 * @return array|bool
+	 */
 	public function getUserData()
 	{
-		//todo remove hack.
-
-		$this->loginModel->getUserData();
-		if( isset( $_SESSION[ "authentication" ][ "username" ] ) && isset( $_SESSION[ "authentication" ][ "userId" ] ) )
-		{
-			return $_SESSION[ "authentication" ];
-		}
+		return $this->loginModel->getUserData();
 	}
 
+	/**
+	 * Get an array with feedback.
+	 *
+	 * @return array
+	 */
 	public function getFeedback()
 	{
 		return $this->loginModel->getFeedback();

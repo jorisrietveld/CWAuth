@@ -7,15 +7,18 @@
 namespace CWAuth;
 
 use CWAuth\Models\Authentication\Register;
+use CWAuth\Models\Storage\UserTable;
 
 
 class UsersManager
 {
 	protected $registerModel;
+	protected $userTableModel;
 
 	public function __construct(  )
 	{
 		$this->registerModel = new Register();
+		$this->userTableModel = new UserTable();
 	}
 
 	public function registerUser( $username, $password, $email )
