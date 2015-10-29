@@ -1,4 +1,33 @@
 <?xml version="1.0" standalone="yes"?>
+<!DOCTYPE messages [
+        <!ELEMENT messages (login|password|randomGenerator|database|register|userManager)*>
+        <!ELEMENT login (feedback|exceptions)*>
+        <!ELEMENT feedback (userNotFound|passwordMisMatch|alreadyLoggedIn|notUniqueEmail|notUniqueUsername|deleteZeroRowCount|blockZeroRowCount|unBlockZeroRowCount|userNotFoundEmail|userNotFoundId|cantUpdateEmail|cantUpdateUsername|cantUpdatePassword|notRegistered)*>
+        <!ELEMENT userNotFound (#PCDATA)>
+        <!ELEMENT passwordMisMatch (#PCDATA)>
+        <!ELEMENT alreadyLoggedIn (#PCDATA)>
+        <!ELEMENT exceptions (cantUpdatePassword|saveModeOn|saltToShort|noRandomSource|missingConfiguration)*>
+        <!ELEMENT cantUpdatePassword (#PCDATA)>
+        <!ELEMENT password (exceptions)*>
+        <!ELEMENT saveModeOn (#PCDATA)>
+        <!ELEMENT saltToShort (#PCDATA)>
+        <!ELEMENT randomGenerator (exceptions)*>
+        <!ELEMENT noRandomSource (#PCDATA)>
+        <!ELEMENT database (exceptions)*>
+        <!ELEMENT missingConfiguration (#PCDATA)>
+        <!ELEMENT register (feedback)*>
+        <!ELEMENT notUniqueEmail (#PCDATA)>
+        <!ELEMENT notUniqueUsername (#PCDATA)>
+        <!ELEMENT userManager (feedback)*>
+        <!ELEMENT deleteZeroRowCount (#PCDATA)>
+        <!ELEMENT blockZeroRowCount (#PCDATA)>
+        <!ELEMENT unBlockZeroRowCount (#PCDATA)>
+        <!ELEMENT userNotFoundEmail (#PCDATA)>
+        <!ELEMENT userNotFoundId (#PCDATA)>
+        <!ELEMENT cantUpdateEmail (#PCDATA)>
+        <!ELEMENT cantUpdateUsername (#PCDATA)>
+        <!ELEMENT notRegistered (#PCDATA)>
+        ]>
 <messages>
     <login>
         <feedback>
@@ -54,7 +83,7 @@
         </feedback>
     </register>
     <userManager>
-        <errorMessages>
+        <feedback>
             <deleteZeroRowCount>
                 The user was not deleted, check if the user with {{id}} exists in the database.
             </deleteZeroRowCount>
@@ -79,6 +108,9 @@
             <cantUpdatePassword>
                 The users password was not updated, from the user with id: {{id}}
             </cantUpdatePassword>
-        </errorMessages>
+            <notRegistered>
+                The user could not be registered.
+            </notRegistered>
+        </feedback>
     </userManager>
 </messages>

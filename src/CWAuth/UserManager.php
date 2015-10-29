@@ -4,21 +4,56 @@
  * Date: 29-10-15 - 13:46
  */
 
-namespace CWAuth\Models\Authentication;
+namespace CWAuth\Authentication;
 
 use CWAuth\Helper\Message;
+use CWAuth\Models\Authentication\Register;
 use CWAuth\Models\Storage\UserTable;
 
 
 class UserManager
 {
 	protected $userTableModel;
+	protected $registerModel;
+
 	protected $errors   = [ ];
 	protected $feedback = [ ];
 
 	public function __construct()
 	{
 		$this->userTableModel = new UserTable();
+		$this->registerModel  = new Register();
+	}
+
+	public function registerUser( $username, $password, $email )
+	{
+		try
+		{
+			$userRegisterd = $this->registerModel->registerUser( $username, $password, $email );
+
+			if( $userRegisterd )
+			{
+				return true;
+			}
+
+			if( count( $this->registerModel->getFeedback() ) )
+			{
+				$this->feedback = $this->registerModel->getFeedback();
+			}
+			else
+			{
+				$this->setFeedback( Message::getMessage( "userManager.feedback.notRegistered" ) );
+			}
+			return false;
+
+		}
+		catch( \Exception $exception )
+		{
+			//TODO log exception.
+			$this->setErrorMessage( $exception->getMessage() );
+
+			return false;
+		}
 	}
 
 	public function deleteUser( $userId )
@@ -32,7 +67,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.deleteZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.deleteZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -55,7 +90,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.blockZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.blockZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -79,7 +114,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.unBlockZeroRowCount", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.unBlockZeroRowCount", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -103,7 +138,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.userNotFoundId", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.userNotFoundId", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -126,7 +161,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.userNotFoundEmail", [ "email" => $email ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.userNotFoundEmail", [ "email" => $email ] ) );
 
 			return false;
 		}
@@ -151,7 +186,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdatePassword", [ "id" => $userId ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.cantUpdatePassword", [ "id" => $userId ] ) );
 
 			return false;
 		}
@@ -174,7 +209,7 @@ class UserManager
 			{
 				return true;
 			}
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdateUsername", [ "id" => $userId, "username" => $username ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.cantUpdateUsername", [ "id" => $userId, "username" => $username ] ) );
 
 			return false;
 		}
@@ -198,7 +233,7 @@ class UserManager
 				return true;
 			}
 
-			$this->setFeedback( Message::getMessage( "userManager.errorMessages.cantUpdateEmail", [ "id" => $userId, "email" => $email ] ) );
+			$this->setFeedback( Message::getMessage( "userManager.feedback.cantUpdateEmail", [ "id" => $userId, "email" => $email ] ) );
 
 			return false;
 		}
@@ -218,7 +253,7 @@ class UserManager
 
 	protected function setErrorMessage( $errorMessage )
 	{
-		$this->errors[] = trim( $errorMessage);
+		$this->errors[] = trim( $errorMessage );
 	}
 
 	public function getFeedback()
