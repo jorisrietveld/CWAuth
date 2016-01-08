@@ -22,13 +22,15 @@ class Authentication
 	protected $rememberMeModel;
 
 	/**
-	 * Save the login, logout and rememberMe model to the classes property's.
+	 * Save the login, logout and rememberMeCookie model to the classes property's.
 	 */
 	public function __construct()
 	{
 		$this->loginModel  = new Login();
 		$this->logoutModel = new Logout();
 		$this->rememberMeModel  = new RememberMeCookie();
+		$this->sessionModel = new Session();
+
 	}
 
 	/**
@@ -45,7 +47,7 @@ class Authentication
 	}
 
 	/**
-	 * Destroy the session and unset the rememberMe cookie.
+	 * Destroy the session and unset the rememberMeCookie cookie.
 	 */
 	public function logout()
 	{

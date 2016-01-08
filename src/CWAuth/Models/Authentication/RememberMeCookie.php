@@ -23,11 +23,11 @@ class RememberMeCookie
 
 	protected $feedback;
 
-	public function __construct()
+	public function __construct( UserTable $userTable = null, RememberTable $rememberTable = null, Cookie $cookie = null )
 	{
-		$this->userTable     = new UserTable();
-		$this->rememberTable = new RememberTable();
-		$this->cookie        = new Cookie();
+		$this->userTable     = ( $userTable ) ? $userTable : new UserTable();
+		$this->rememberTable = ( $rememberTable ) ? $rememberTable : new RememberTable();
+		$this->cookie        = ( $cookie ) ? $cookie : new Cookie();
 	}
 
 	public function checkRememberMeCookie()
@@ -65,7 +65,6 @@ class RememberMeCookie
 
 		return false;
 	}
-
 
 
 	public function setAnRememberMeCookie( $userId )

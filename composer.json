@@ -12,5 +12,9 @@
             "CWAuth\\": "src/CWAuth/",
             "CWDatabase\\": "../CWDatabase/src/CWDatabase/"
         }
-	}
+	},
+    "require": {
+        "psr/log": "^1.0",
+        "symfony/dependency-injection": "^2.7"
+    }
 }

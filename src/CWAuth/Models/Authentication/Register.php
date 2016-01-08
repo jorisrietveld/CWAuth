@@ -16,9 +16,9 @@ class Register
 
 	private $feedback = [ ];
 
-	public function __construct()
+	public function __construct( UserTable $userTable = null )
 	{
-		$this->userTable = new UserTable();
+		$this->userTable = ( $userTable ) ? $userTable : new UserTable();
 	}
 
 	public function registerUser( $username, $password, $email )

@@ -24,7 +24,7 @@ try
 		}
 	}
 
-	//var_dump( $rememberMe->checkRememberMeCookie() );
+	//var_dump( $rememberMeCookie->checkRememberMeCookie() );
 	var_dump($_COOKIE);
 }
 catch( Exception $e )

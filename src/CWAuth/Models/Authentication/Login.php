@@ -15,7 +15,7 @@ use CWAuth\Models\Storage\UserTable;
 class Login
 {
 	protected $userTable;
-	protected $rememberMe;
+	protected $rememberMeCookie;
 
 	protected $feedback;
 	public    $passwordAutoRehash = true;
@@ -23,10 +23,10 @@ class Login
 	/**
 	 * Instantiate the object, save tue user table model for accessing the user database
 	 */
-	public function __construct()
+	public function __construct( UserTable $userTable = null, RememberMeCookie $rememberMeCookie = null )
 	{
-		$this->userTable  = new userTable();
-		$this->rememberMe = new RememberMeCookie();
+		$this->userTable = ( $userTable ) ? $userTable : new UserTable();
+		$this->rememberMeCookie = ( $rememberMeCookie ) ? $rememberMeCookie : new RememberMeCookie();
 	}
 
 	/**
@@ -47,10 +47,10 @@ class Login
 			return true;
 		}
 
-		if( $this->rememberMe->checkRememberMeCookie() )
+		if( $this->rememberMeCookie->checkRememberMeCookie() )
 		{
-			$rememberMe    = $this->rememberMe;
-			$valueSegments = $this->rememberMe->extractDataFromCookieValue( $_COOKIE[ $rememberMe::REMEMBER_ME_COOKIE_NAME ] );
+			$rememberMe    = $this->rememberMeCookie;
+			$valueSegments = $this->rememberMeCookie->extractDataFromCookieValue( $_COOKIE[ $rememberMe::REMEMBER_ME_COOKIE_NAME ] );
 			$userId        = $valueSegments[ 1 ];
 
 			// If it is sure the cookie can be trusted log him in.
@@ -74,7 +74,7 @@ class Login
 
 			if( $rememberMe )
 			{
-				$this->rememberMe->setAnRememberMeCookie( $userRecord[ "id" ] );
+				$this->rememberMeCookie->setAnRememberMeCookie( $userRecord[ "id" ] );
 			}
 
 			return true;
@@ -133,7 +133,7 @@ class Login
 			return true;
 		}
 
-		$userId = $this->rememberMe->checkRememberMeCookie();
+		$userId = $this->rememberMeCookie->checkRememberMeCookie();
 
 		if( $userId )
 		{

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\DependencyInjection\\' => array($vendorDir . '/symfony/dependency-injection'),
     'CWDatabase\\' => array($baseDir . '/../CWDatabase/src/CWDatabase'),
     'CWAuth\\' => array($baseDir . '/src/CWAuth'),
 );

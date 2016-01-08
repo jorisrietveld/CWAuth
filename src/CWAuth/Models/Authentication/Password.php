@@ -9,8 +9,11 @@ namespace CWAuth\Models\Authentication;
 
 use \CWAuth\Helper\Message;
 
+
 class Password
 {
+	protected $randomGenerator;
+
 	private $passwordOptions = [
 		'cost' => 11,
 		"algo" => PASSWORD_DEFAULT
@@ -19,8 +22,11 @@ class Password
 	public $passwordAutoGenerateSalt = false;
 	public $saveMode                 = true;
 
-	public function __construct( $options = [ ] )
+
+	public function __construct( RandomGenerator $randomGenerator = null, $options = [ ] )
 	{
+		$this->randomGenerator = ( $randomGenerator ) ? $randomGenerator : new RandomGenerator();
+
 		foreach( $options as $option => $value )
 		{
 			if( $option == "saveMode" || $option == "passwordAutoGenerateSalt" )
@@ -75,9 +81,7 @@ class Password
 
 	public function getSalt( $saltLength = 40 )
 	{
-		$randomGenerator = new RandomGenerator();
-
-		return $randomGenerator->getPseudoRandomBytes( $saltLength );
+		return $this->randomGenerator->getPseudoRandomBytes( $saltLength );
 	}
 
 	public function getPasswordInformation( $hash )

@@ -265,4 +265,6 @@ class UserManager
 	{
 		$this->errors[] = trim( $feedback );
 	}
+
+
 }

@@ -6,7 +6,6 @@
 
 namespace CWAuth\Helper;
 
-use CWDatabase\Helper\DatabaseLiteral;
 
 
 class DateAndTime

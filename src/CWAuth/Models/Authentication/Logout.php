@@ -12,20 +12,27 @@ use CWAuth\Models\Storage\Cookie;
 
 class Logout
 {
-	public function deAuthenticateUser(  )
+	protected $authenticationSession;
+	protected $cookie;
+
+	public function __construct( AuthenticationSession $authenticationSession = null, Cookie $cookie = null )
+	{
+		$this->authenticationSession = ( $authenticationSession ) ? $authenticationSession : new AuthenticationSession();
+		$this->cookie                = ( $cookie ) ? $cookie : new Cookie();
+	}
+
+	public function deAuthenticateUser()
 	{
 		// Regenerate the session id and destroy the old session.
-		session_regenerate_id(true);
+		session_regenerate_id( true );
 
-		$authenticationSession = new AuthenticationSession();
-		$authenticationSession->removeSessionData();
+		$this->authenticationSession->removeSessionData();
 
 		$this->deleteCookie();
 	}
 
 	public function deleteCookie()
 	{
-		$cookie = new Cookie();
-		$cookie->deleteCookie( RememberMeCookie::REMEMBER_ME_COOKIE_NAME );
+		$this->cookie->deleteCookie( RememberMeCookie::REMEMBER_ME_COOKIE_NAME );
 	}
 }
